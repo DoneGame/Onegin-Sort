@@ -1,0 +1,13 @@
+*.save
+*.cpp.save
+*.exe
+*.h.save
+*.o
+*.exe.log
+*.exe.log.dmp
+*.ii
+*.txt
+*.csv
+doxygen/
+**/.git-auto/
+!include/x.txt
