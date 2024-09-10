@@ -36,6 +36,8 @@ int main () {
         print_str (str_no, text[index[i]]);
     }
 
+    free (index); index = NULL;
+
     return 0;
 }
 
