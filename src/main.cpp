@@ -5,27 +5,71 @@
 
 int  my_strcmp   (const char *s1, const char *s2);
 void print_str   (char str_name[], const char *string);
-void bubble_sort (const char text[10][10], unsigned index[], unsigned n_lines);
+void bubble_sort (char text[50][200], unsigned index[], unsigned n_lines);
 
-const char text_filename[] = "onegin_eng.txt";
+const char text_filename[] = "onegin_en.txt";
 
 int main () {
-    //FILE *text_file = fopen (text_filename, "r");
+    FILE *text_file = fopen (text_filename, "r");
 
-    const char text[10][10] = {
-        {'a', 'b', 'c', '\0'},
-        {'a', 'b', 'b', '\0'},
-        {'b', 'c', 'c', '\0'},
-        {'a', 'a', 'a', '\0'},
-        {'a', 'a', 'a', 'a', '\0'},
-        {'a', 'a', 'a', 'a', 's', '\0'}
-    };
+    if (!text_file) {
+        printf ("Can't open file with text!");
+        return 1;
+    }
 
-    unsigned num_lines = 6;
+    /*
+    fseek(f, 0, SEEK_END);
+    size_t file_size = ftell(f);
+    fseek(f, 0, SEEK_SET);
 
-    //fclose(text_file);
+    const char *text = (const char *) calloc (file_size, 1);
+
+    if (!text) {
+        printf ("Failed to allocate memory!");
+        return 1;
+    }
+    */
+
+    char text[50][200] = {};
+
+    unsigned line_no = 0;
+    unsigned symbol_no = 0;
+    int c = '\0';
+    while ((c = fgetc(text_file)) != EOF) {
+        assert (line_no   < 50 );
+        assert (symbol_no < 200);
+
+        if (c == '\n') {
+            if (symbol_no == 0)
+                continue;
+
+            text[line_no++][symbol_no++] = '\0';
+            symbol_no = 0;
+        }
+        else
+            text[line_no][symbol_no++] = (char) c;
+    }
+
+    if (symbol_no == 0 && line_no > 0) {
+        line_no--;
+    }
+    else {
+        assert (line_no   < 50 );
+        assert (symbol_no < 200);
+        text[line_no][symbol_no] = '\0';
+    }
+    
+    unsigned num_lines = line_no + 1;
+
+    fclose(text_file);
 
     unsigned *index = (unsigned *) calloc (num_lines, sizeof(unsigned));
+
+    if (!index) {
+        printf ("Failed to allocate memory!");
+        return 1;
+    }
+
     for (unsigned i = 0; i < num_lines; i++)
         index[i] = i;
 
@@ -40,7 +84,7 @@ int main () {
     return 0;
 }
 
-void bubble_sort (const char text[10][10], unsigned index[], unsigned n_lines) {
+void bubble_sort (char text[50][200], unsigned index[], unsigned n_lines) {
     for (unsigned i = n_lines; i > 0; i--) {
         for (unsigned j = 0; j < i - 1; j++) {
             assert (j + 1 < n_lines);
