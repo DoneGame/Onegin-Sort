@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-const char text_filename[] = "onegin_en.txt";
+const char text_filename[] = "test.txt"; // onegin_en.txt
 const unsigned max_lines = 50;
 const unsigned max_symbols_in_line = 200;
 

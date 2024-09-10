@@ -6,7 +6,6 @@
 *.exe.log
 *.exe.log.dmp
 *.ii
-*.txt
 *.csv
 doxygen/
 **/.git-auto/
