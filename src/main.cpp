@@ -2,6 +2,9 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 const char text_filename[] = "test.txt"; // onegin_en.txt
 const unsigned max_lines = 50;
@@ -9,6 +12,11 @@ const unsigned max_lines = 50;
 struct Text {
     char *ptr_array[max_lines];
     unsigned num_lines;
+/*
+    char *buffer;
+    size_t buffer_size;
+    size_t file_size;
+*/
 };
 
 void        read_from_file (const char file_name[], struct Text *readed_text);
@@ -16,6 +24,7 @@ struct Text bubble_sort    (struct Text sorting_text);
 int         my_strcmp      (const char *s1, const char *s2);
 void        print_text     (struct Text text);
 void        print_str      (char str_name[], const char *string);
+size_t      get_file_size  (FILE *file);
 
 
 int main () {
@@ -43,9 +52,14 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
         return;
     }
 
-    fseek(text_file, 0, SEEK_END);
-    size_t file_size = ftell(text_file);
-    fseek(text_file, 0, SEEK_SET);
+    size_t file_size = get_file_size(text_file);
+
+    if (!file_size) {
+        printf ("Can't get file size!");
+        return;
+    }
+
+    printf ("Text file size = %d bytes\n", file_size);
 
     char *text_array = (char *) calloc (file_size, 1);
 
@@ -133,4 +147,20 @@ void print_str (char str_name[], const char *string) {
     for (unsigned i = 0; i < strlen(string); i++)
         printf ("%c(%3d) ", string[i], string[i]);
     printf ("\n");
+}
+
+size_t get_file_size (FILE *file) {
+    int file_desc = fileno(file);
+
+    printf ("File descriptor = %d\n", file_desc);
+
+    if (file_desc == -1)
+        return 0;
+
+    struct stat file_info;
+
+    if (fstat(file_desc, &file_info) != 0)
+        return 0;
+
+    return file_info.st_size;
 }
