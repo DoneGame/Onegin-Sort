@@ -73,43 +73,46 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
 
     readed_text->ptr_array[0] = text_array;
 
-    unsigned symbol_counter = 0;
+    printf ("start of array = %lu\n", (unsigned long) text_array);
+
+    char *current_symbol = text_array;
     unsigned line_no = 0;
-    unsigned symbol_no = 0;
-    for (; symbol_counter < n_symbols_readed; symbol_counter++) {
-        assert (symbol_counter < n_symbols_readed);
+    while ((current_symbol = strchr(current_symbol, '\n')) != NULL) {
+        printf ("new line = %lu\n", (unsigned long) current_symbol);
 
-        if (text_array[symbol_counter] == '\n') {
-            if (symbol_no == 0) {
-                readed_text->ptr_array[line_no] = text_array + symbol_counter;
-                continue;
-            }
+        assert (current_symbol > NULL && current_symbol < text_array + array_size / sizeof(char));
 
-            text_array[symbol_counter] = '\0';
+        *current_symbol = '\0';
+        current_symbol++;
 
+        if (current_symbol < text_array + n_symbols_readed) {
             assert (line_no + 1 < max_lines);
-            readed_text->ptr_array[line_no + 1] = text_array + symbol_counter + 1;
+            readed_text->ptr_array[line_no + 1] = current_symbol;
 
             line_no++;
-            symbol_no = 0;
-        }
-        else {
-            symbol_no++;
         }
     }
 
-    if (symbol_no == 0 && line_no > 0) {
-        line_no--;
+    printf ("Array of pointers:\n");
+    for (unsigned i = 0; i < line_no + 1; i++) {
+        assert (i < max_lines);
+
+        printf ("Str %d = %lu\n", i, (unsigned long) readed_text->ptr_array[i]);
     }
-    else {
-        assert (symbol_counter < n_symbols_readed + 1); // нужно ли?
-        assert (symbol_counter < array_size / sizeof(char));
-        text_array[symbol_counter] = '\0';
+
+    /*
+    for (current_symbol += 1; current_symbol < text_array + text_size / sizeof(char); current_symbol++) {
+        assert (current_symbol < text_array + array_size / sizeof(char));
+
+        if (current_symbol )
     }
+
+    if (*current_symbol != )
+    */
 
     readed_text->num_lines = line_no + 1;
 
-    printf ("n_lines = %d\n", readed_text->num_lines);
+    printf ("Number of lines = %d\n", readed_text->num_lines);
 
     fclose(text_file);
 }
