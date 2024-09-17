@@ -6,16 +6,14 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-const char text_filename[] = "onegin_en.txt"; // test.txt
+const char text_filename[] = "test.txt"; // onegin_en.txt
 
 struct Text {
     char **ptr_array;
     unsigned num_lines;
-/*
     char *buffer;
     size_t buffer_size;
-    size_t file_size;
-*/
+    size_t text_file_size;
 };
 
 void        read_from_file (const char file_name[], struct Text *readed_text);
@@ -27,7 +25,7 @@ size_t      get_file_size  (FILE *file);
 
 
 int main () {
-    struct Text original_text = {.ptr_array = NULL, .num_lines = 0};
+    struct Text original_text = {.ptr_array = NULL, .num_lines = 0, .buffer = NULL, .buffer_size = 0, .text_file_size = 0};
     
     read_from_file (text_filename, &original_text);
 
@@ -36,10 +34,11 @@ int main () {
 
     struct Text sorted_text = bubble_sort (original_text);
 
+    printf ("Sorted text:\n");
     print_text (sorted_text);
 
-    free(original_text.ptr_array[0]); original_text.ptr_array[0] = NULL;
-    free(original_text.ptr_array);    original_text.ptr_array = NULL;
+    free(original_text.buffer);    original_text.buffer    = NULL;
+    free(original_text.ptr_array); original_text.ptr_array = NULL;
 
     return 0;
 }
@@ -61,6 +60,8 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
 
     printf ("Text file size = %d bytes\n", file_size);
 
+    readed_text->text_file_size = file_size;
+
     size_t array_size = file_size + 1 * sizeof(char);
     char *text_array = (char *) calloc (array_size, 1);
 
@@ -69,16 +70,19 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
         return;
     }
 
+    readed_text->buffer_size = array_size;
+    readed_text->buffer      = text_array;
+
     unsigned n_symbols_readed = fread (text_array, 1, file_size, text_file);
 
-    printf ("start of array = %lu\n", (unsigned long) text_array);
+    printf ("start of array = %lu\n\n", (unsigned long) text_array);
 
     printf ("Calculating number of lines\n");
 
     unsigned line_no = 0;
     char *current_symbol = text_array;
     for ( ; (current_symbol = strchr(current_symbol, '\n')) != NULL; current_symbol++) {
-        printf ("new line = %lu\n", (unsigned long) current_symbol);
+        // printf ("new line = %lu\n", (unsigned long) current_symbol);
 
         if (current_symbol < text_array + n_symbols_readed)
             if (*(current_symbol + 1) != '\0')
@@ -87,7 +91,7 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
 
     unsigned n_lines = line_no + 1;
 
-    printf ("Number of lines = %d\n", n_lines);
+    printf ("Number of lines = %d\n\n", n_lines);
 
     printf ("Creating pointers array\n");
 
@@ -98,10 +102,12 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
         return;
     }
 
-    printf ("Pointers array = %lu\n", (unsigned long) pointers_array);
+    printf ("Pointers array = %lu\n\n", (unsigned long) pointers_array);
 
     readed_text->ptr_array = pointers_array;
     pointers_array[0] = text_array;
+
+    printf ("Filling pointers array\n");
 
     for (char *symbol_pointer = text_array; (symbol_pointer = strchr(symbol_pointer, '\n')) != NULL; ) {
         printf ("new line = %lu\n", (unsigned long) symbol_pointer);
@@ -125,9 +131,9 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
     }
     printf ("\n");
 
-    readed_text->num_lines = n_lines;
-
     fclose(text_file);
+
+    readed_text->num_lines = n_lines;
 }
 
 struct Text bubble_sort (struct Text sorting_text) {
