@@ -7,10 +7,9 @@
 #include <unistd.h>
 
 const char text_filename[] = "onegin_en.txt"; // test.txt
-const unsigned max_lines = 50;
 
 struct Text {
-    char *ptr_array[max_lines];
+    char **ptr_array;
     unsigned num_lines;
 /*
     char *buffer;
@@ -28,7 +27,7 @@ size_t      get_file_size  (FILE *file);
 
 
 int main () {
-    struct Text original_text = {.ptr_array = {NULL}, .num_lines = 0};
+    struct Text original_text = {.ptr_array = NULL, .num_lines = 0};
     
     read_from_file (text_filename, &original_text);
 
@@ -40,6 +39,7 @@ int main () {
     print_text (sorted_text);
 
     free(original_text.ptr_array[0]); original_text.ptr_array[0] = NULL;
+    free(original_text.ptr_array);    original_text.ptr_array = NULL;
 
     return 0;
 }
@@ -71,48 +71,61 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
 
     unsigned n_symbols_readed = fread (text_array, 1, file_size, text_file);
 
-    readed_text->ptr_array[0] = text_array;
-
     printf ("start of array = %lu\n", (unsigned long) text_array);
 
-    char *current_symbol = text_array;
+    printf ("Calculating number of lines\n");
+
     unsigned line_no = 0;
-    while ((current_symbol = strchr(current_symbol, '\n')) != NULL) {
+    char *current_symbol = text_array;
+    for ( ; (current_symbol = strchr(current_symbol, '\n')) != NULL; current_symbol++) {
         printf ("new line = %lu\n", (unsigned long) current_symbol);
 
-        assert (current_symbol > NULL && current_symbol < text_array + array_size / sizeof(char));
+        if (current_symbol < text_array + n_symbols_readed)
+            if (*(current_symbol + 1) != '\0')
+                line_no++;
+    }
 
-        *current_symbol = '\0';
-        current_symbol++;
+    unsigned n_lines = line_no + 1;
 
-        if (current_symbol < text_array + n_symbols_readed) {
-            assert (line_no + 1 < max_lines);
-            readed_text->ptr_array[line_no + 1] = current_symbol;
+    printf ("Number of lines = %d\n", n_lines);
 
-            line_no++;
+    printf ("Creating pointers array\n");
+
+    char **pointers_array = (char **) calloc (n_lines, sizeof(char *));
+
+    if (!pointers_array) {
+        printf ("Failed to allocate memory for pointers array!");
+        return;
+    }
+
+    printf ("Pointers array = %lu\n", (unsigned long) pointers_array);
+
+    readed_text->ptr_array = pointers_array;
+    pointers_array[0] = text_array;
+
+    for (char *symbol_pointer = text_array; (symbol_pointer = strchr(symbol_pointer, '\n')) != NULL; ) {
+        printf ("new line = %lu\n", (unsigned long) symbol_pointer);
+
+        assert (symbol_pointer > NULL && symbol_pointer < text_array + array_size / sizeof(char));
+
+        *symbol_pointer = '\0';
+        symbol_pointer++;
+
+        if (symbol_pointer < text_array + n_symbols_readed) {
+            assert (pointers_array + 1 < readed_text->ptr_array + n_lines);
+            *(++pointers_array) = symbol_pointer;
         }
     }
 
-    printf ("Array of pointers:\n");
-    for (unsigned i = 0; i < line_no + 1; i++) {
-        assert (i < max_lines);
+    printf ("\nArray of pointers:\n");
+    for (unsigned i = 0; i < n_lines; i++) {
+        assert (i < n_lines);
 
         printf ("Str %d = %lu\n", i, (unsigned long) readed_text->ptr_array[i]);
     }
+    printf ("\n");
 
-    /*
-    for (current_symbol += 1; current_symbol < text_array + text_size / sizeof(char); current_symbol++) {
-        assert (current_symbol < text_array + array_size / sizeof(char));
-
-        if (current_symbol )
-    }
-
-    if (*current_symbol != )
-    */
-
-    readed_text->num_lines = line_no + 1;
-
-    printf ("Number of lines = %d\n", readed_text->num_lines);
+    readed_text->num_lines = n_lines;
 
     fclose(text_file);
 }
@@ -134,6 +147,9 @@ struct Text bubble_sort (struct Text sorting_text) {
 }
 
 int my_strcmp (const char *string1, const char *string2) {
+    assert (string1);
+    assert (string2);
+
     int i = 0;
     for (; string1[i] != '\0' && string1[i] == string2[i]; i++) {}; 
     
@@ -144,6 +160,9 @@ void print_text (struct Text text) {
     for (unsigned i = 0; i < text.num_lines; i++) {
         char str_no[10] = "";
         itoa (i, str_no, 10);
+
+        assert (i < text.num_lines);
+        assert (text.ptr_array[i]);
         print_str (str_no, text.ptr_array[i]);
     }
 }
