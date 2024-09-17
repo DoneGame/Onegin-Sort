@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-const char text_filename[] = "test.txt"; // onegin_en.txt
+const char text_filename[] = "onegin_en.txt"; // test.txt
 const unsigned max_lines = 50;
 
 struct Text {
@@ -61,39 +61,40 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
 
     printf ("Text file size = %d bytes\n", file_size);
 
-    char *text_array = (char *) calloc (file_size, 1);
+    size_t array_size = file_size + 1 * sizeof(char);
+    char *text_array = (char *) calloc (array_size, 1);
 
     if (!text_array) {
-        printf ("Failed to allocate memory!");
+        printf ("Failed to allocate memory for text array!");
         return;
     }
+
+    unsigned n_symbols_readed = fread (text_array, 1, file_size, text_file);
 
     readed_text->ptr_array[0] = text_array;
 
     unsigned symbol_counter = 0;
     unsigned line_no = 0;
     unsigned symbol_no = 0;
-    int c = '\0';
-    while ((c = fgetc(text_file)) != EOF) {
-        assert (line_no        < max_lines               );
-        assert (symbol_counter < file_size / sizeof(char));
+    for (; symbol_counter < n_symbols_readed; symbol_counter++) {
+        assert (symbol_counter < n_symbols_readed);
 
-        if (c == '\n') {
-            if (symbol_no == 0)
+        if (text_array[symbol_counter] == '\n') {
+            if (symbol_no == 0) {
+                readed_text->ptr_array[line_no] = text_array + symbol_counter;
                 continue;
+            }
 
-            readed_text->ptr_array[line_no][symbol_no++] = '\0';
+            text_array[symbol_counter] = '\0';
 
             assert (line_no + 1 < max_lines);
-            readed_text->ptr_array[line_no + 1] = readed_text->ptr_array[line_no] + symbol_no + 1;
+            readed_text->ptr_array[line_no + 1] = text_array + symbol_counter + 1;
 
             line_no++;
-            symbol_counter++;
             symbol_no = 0;
         }
         else {
-            symbol_counter++;
-            readed_text->ptr_array[line_no][symbol_no++] = (char) c;
+            symbol_no++;
         }
     }
 
@@ -101,12 +102,14 @@ void read_from_file (const char file_name[], struct Text *readed_text) {
         line_no--;
     }
     else {
-        assert (line_no        < max_lines               );
-        assert (symbol_counter < file_size / sizeof(char));
-        readed_text->ptr_array[line_no][symbol_no] = '\0';
+        assert (symbol_counter < n_symbols_readed + 1); // нужно ли?
+        assert (symbol_counter < array_size / sizeof(char));
+        text_array[symbol_counter] = '\0';
     }
 
     readed_text->num_lines = line_no + 1;
+
+    printf ("n_lines = %d\n", readed_text->num_lines);
 
     fclose(text_file);
 }
