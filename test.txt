@@ -1,6 +1,6 @@
 abc
-abb
-bbc
-aaa
-aaaa
-aaaas
+aBb
+Bbc
+AaA
+aAaa
+aaaAs

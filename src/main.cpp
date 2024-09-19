@@ -69,6 +69,7 @@ int main () {
     printf ("Quick sorted text:\n");
     print_text (quick_sorted_text);
 
+
     // printf ("Original array of pointers after sorting:\n");
     // print_pointer_array (original_text.ptr_array, original_text.num_lines);
 

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <ctype.h>
 
 #include "sorting.h"
 #include "output.h"
@@ -40,8 +41,8 @@ int my_strcmp (const void *string1, const void *string2) {
     const char *real_string_1 = * (const char **) string1;
     const char *real_string_2 = * (const char **) string2;
 
-    int i = 0;
-    for (; real_string_1[i] != '\0' && real_string_1[i] == real_string_2[i]; i++) {}; 
+    size_t i = 0;
+    for (; real_string_1[i] != '\0' && tolower(real_string_1[i]) == tolower(real_string_2[i]); i++) {}; 
     
-    return real_string_1[i] - real_string_2[i];
+    return tolower(real_string_1[i]) - tolower(real_string_2[i]);
 }
