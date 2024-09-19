@@ -11,6 +11,8 @@
 
 
 void read_from_file (const char file_name[], struct Text_t *readed_text) {
+    assert (readed_text);
+
     FILE *text_file = fopen (file_name, "r");
 
     if (!text_file) {
@@ -80,7 +82,7 @@ char *read_file_to_buffer (FILE *file_with_text, struct Text_t *readed_text, siz
         return NULL;
     }
 
-    readed_text->buffer      = text_array;
+    readed_text->buffer = text_array;
 
     *symbols_readed = fread (text_array, 1, readed_text->text_file_size, file_with_text);
 
@@ -89,7 +91,9 @@ char *read_file_to_buffer (FILE *file_with_text, struct Text_t *readed_text, siz
     return text_array;
 }
 
-size_t count_lines (char *text_array, size_t symbols_readed) {
+size_t count_lines (char *text_array, const size_t symbols_readed) {
+    assert (text_array);
+
     size_t line_no = 0;
     char *current_symbol = text_array;
     for ( ; (current_symbol = strchr(current_symbol, '\n')) != NULL; current_symbol++) {
@@ -103,7 +107,9 @@ size_t count_lines (char *text_array, size_t symbols_readed) {
     return line_no + 1;
 }
 
-void fill_pointer_array (struct Text_t *readed_text, size_t num_lines, size_t symbols_readed) {
+void fill_pointer_array (struct Text_t *readed_text, const size_t num_lines, const size_t symbols_readed) {
+    assert (readed_text);
+
     char **pointers_array_pointer = readed_text->ptr_array;
     pointers_array_pointer[0] = readed_text->buffer;
 
@@ -122,7 +128,7 @@ void fill_pointer_array (struct Text_t *readed_text, size_t num_lines, size_t sy
     }
 }
 
-size_t get_file_size (FILE *file) {
+size_t get_file_size (const FILE *file) {
     assert (file);
 
     int file_desc = fileno(file);

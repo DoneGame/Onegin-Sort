@@ -6,7 +6,7 @@
 #include "output.h"
 
 
-void print_text (struct Text_t text) {
+void print_text (const struct Text_t text) {
     for (size_t i = 0; i < text.num_lines; i++) {
         char str_no[10] = ""; // 10 - maximum length of unsigned int in base 10
         itoa (i, str_no, 10);
@@ -17,7 +17,7 @@ void print_text (struct Text_t text) {
     }
 }
 
-void print_str (char str_name[], const char *string) {
+void print_str (const char str_name[], const char *string) {
     assert (string);
 
     printf ("%s = ", str_name);
@@ -26,7 +26,7 @@ void print_str (char str_name[], const char *string) {
     printf ("\n");
 }
 
-void print_pointer_array (char **ptr_array, size_t n_lines) {
+void print_pointer_array (char **ptr_array, const size_t n_lines) {
     printf ("\nArray of pointers:\n");
     for (size_t i = 0; i < n_lines; i++) {
         assert (i < n_lines);
