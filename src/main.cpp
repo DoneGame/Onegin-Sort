@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include "main.h"
@@ -6,7 +7,7 @@
 #include "sorting.h"
 #include "output.h"
 
-const char text_filename[] = "onegin_en.txt"; // onegin_en.txt
+const char text_filename[] = "test.txt"; // onegin_en.txt
 
 
 int main () {
@@ -23,31 +24,54 @@ int main () {
     printf ("Original text:\n");
     print_text (original_text);
 
-    struct Text_t sorted_text = {.ptr_array = NULL, .num_lines = original_text.num_lines, 
+
+    struct Text_t bubble_sorted_text = {.ptr_array = NULL, .num_lines = original_text.num_lines, 
                                  .buffer = original_text.buffer, .buffer_size = original_text.buffer_size, 
                                  .text_file_size = original_text.text_file_size};
 
-    printf ("Copying pointer array for sorted text\n");
+    printf ("\nCopying pointer array for bubble sorting\n");
 
-    if (!sorted_text.num_lines)
+    if (!bubble_sorted_text.num_lines)
         return 1;
 
-    copy_pointer_array (&original_text, &sorted_text);
+    copy_pointer_array (&original_text, &bubble_sorted_text);
 
     printf ("Unsorted array of pointers:\n");
-    print_pointer_array (sorted_text.ptr_array, sorted_text.num_lines);
+    print_pointer_array (bubble_sorted_text.ptr_array, bubble_sorted_text.num_lines);
 
-    printf ("Sorting text...\n");
-    bubble_sort (sorted_text.ptr_array, sorted_text.num_lines, sizeof(char *), my_strcmp);
+    printf ("Bubble sorting text...\n");
+    bubble_sort (bubble_sorted_text.ptr_array, bubble_sorted_text.num_lines, sizeof(char *), my_strcmp);
 
-    printf ("\nSorted array of pointers:\n");
-    print_pointer_array (sorted_text.ptr_array, sorted_text.num_lines);
+    printf ("\nBubble sorted array of pointers:\n");
+    print_pointer_array (bubble_sorted_text.ptr_array, bubble_sorted_text.num_lines);
 
-    printf ("Original array of pointers after sorting:\n");
-    print_pointer_array (original_text.ptr_array, original_text.num_lines);
+    printf ("Bubble sorted text:\n");
+    print_text (bubble_sorted_text);
 
-    printf ("Sorted text:\n");
-    print_text (sorted_text);
+
+    struct Text_t quick_sorted_text = {.ptr_array = NULL, .num_lines = original_text.num_lines, 
+                                       .buffer = original_text.buffer, .buffer_size = original_text.buffer_size, 
+                                       .text_file_size = original_text.text_file_size};
+
+    printf ("\nCopying pointer array for quick sorting\n");
+
+    if (!quick_sorted_text.num_lines)
+        return 1;
+
+    copy_pointer_array (&original_text, &quick_sorted_text);
+
+    printf ("Quick sorting text...\n");
+    qsort (quick_sorted_text.ptr_array, quick_sorted_text.num_lines, sizeof(char *), my_strcmp);
+
+    printf ("\nQuick sorted array of pointers:\n");
+    print_pointer_array (quick_sorted_text.ptr_array, quick_sorted_text.num_lines);
+
+    printf ("Quick sorted text:\n");
+    print_text (quick_sorted_text);
+
+    // printf ("Original array of pointers after sorting:\n");
+    // print_pointer_array (original_text.ptr_array, original_text.num_lines);
+
 
     destroy_text (original_text);
 
