@@ -2,7 +2,7 @@
 #include "sorting.h"
 
 
-struct Text_t bubble_sort (struct Text_t sorting_text) {
+void bubble_sort (struct Text_t sorting_text) {
     assert (sorting_text.num_lines != 0);
 
     for (size_t i = sorting_text.num_lines; i > 0; i--) {
@@ -16,8 +16,6 @@ struct Text_t bubble_sort (struct Text_t sorting_text) {
             }
         }
     }
-
-    return sorting_text;
 }
 
 int my_strcmp (const char *string1, const char *string2) {

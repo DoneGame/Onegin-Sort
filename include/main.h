@@ -3,6 +3,7 @@
 
 #include "text_struct.h"
 
-void destroy_text (struct Text_t text_to_destroy);
+void copy_pointer_array (struct Text_t *from_text, struct Text_t *to_text);
+void destroy_text       (struct Text_t text_to_destroy);
 
 #endif //MAIN_H
