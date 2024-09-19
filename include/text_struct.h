@@ -5,7 +5,7 @@
 
 struct Text_t {
     char **ptr_array;
-    unsigned num_lines;
+    size_t num_lines;
     char *buffer;
     size_t buffer_size;
     size_t text_file_size;
