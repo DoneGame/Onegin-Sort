@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-struct Text {
+struct Text_t {
     char **ptr_array;
     unsigned num_lines;
     char *buffer;

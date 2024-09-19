@@ -2,7 +2,7 @@
 #include "sorting.h"
 
 
-struct Text bubble_sort (struct Text sorting_text) {
+struct Text_t bubble_sort (struct Text_t sorting_text) {
     for (unsigned i = sorting_text.num_lines; i > 0; i--) {
         for (unsigned j = 0; j < i - 1; j++) {
             assert (j + 1 < sorting_text.num_lines);
