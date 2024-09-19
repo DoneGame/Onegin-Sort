@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "sorting.h"
 #include "output.h"
@@ -63,5 +64,39 @@ int my_strcmp (const void *string1, const void *string2) {
             j++;
     }
     
-    return tolower(real_string_1[i]) - tolower(real_string_2[i]);
+    return tolower(real_string_1[i]) - tolower(real_string_2[j]);
 }
+
+/*
+int my_reverse_strcmp (const void *string1, const void *string2) {
+    assert (string1);
+    assert (string2);
+
+    const char *real_string_1 = * (const char **) string1;
+    const char *real_string_2 = * (const char **) string2;
+
+    size_t i = strlen(real_string_1);
+    size_t j = strlen(real_string_2);
+    while (i != 0 && j != 0) {
+        if (isalpha(real_string_1[i]) && isalpha(real_string_2[j])) {
+            if (tolower(real_string_1[i]) != tolower(real_string_2[j]))
+                break;
+            else {
+                i--;
+                j--;
+                continue;
+            }
+        }
+
+        if (!isalpha(real_string_1[i])) {
+            i--;
+            continue;
+        }
+
+        if (!isalpha(real_string_2[j]))
+            j--;
+    }
+    
+    return tolower(real_string_1[i]) - tolower(real_string_2[j]);
+}
+*/
