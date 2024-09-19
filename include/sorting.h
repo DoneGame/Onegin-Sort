@@ -3,7 +3,10 @@
 
 #include "text_struct.h"
 
-void bubble_sort (struct Text_t sorting_text);
-int  my_strcmp   (const char *s1, const char *s2);
+typedef int (*compare_func_t) (const void *a, const void *b);
+
+void bubble_sort       (void *data, size_t size, size_t el_size, compare_func_t compare_func);
+void byte_by_byte_copy (char *from_ptr, char *to_ptr, size_t el_size);
+int  my_strcmp         (const void *string1, const void *string2);
 
 #endif //SORTING_H
