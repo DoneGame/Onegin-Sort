@@ -3,6 +3,8 @@
 
 
 struct Text_t bubble_sort (struct Text_t sorting_text) {
+    assert (sorting_text.num_lines != 0);
+
     for (size_t i = sorting_text.num_lines; i > 0; i--) {
         for (size_t j = 0; j < i - 1; j++) {
             assert (j + 1 < sorting_text.num_lines);

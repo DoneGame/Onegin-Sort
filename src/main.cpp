@@ -10,7 +10,7 @@ const char text_filename[] = "test.txt"; // onegin_en.txt
 int main () {
     struct Text_t original_text = {.ptr_array = NULL, .num_lines = 0, .buffer = NULL, .buffer_size = 0, .text_file_size = 0};
 
-    read_from_file (text_filename, &original_text);
+    create_text_from_file (text_filename, &original_text);
 
     if (!original_text.num_lines)
         return 1;

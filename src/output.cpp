@@ -27,6 +27,8 @@ void print_str (const char str_name[], const char *string) {
 }
 
 void print_pointer_array (char **ptr_array, const size_t n_lines) {
+    assert (ptr_array);
+
     printf ("\nArray of pointers:\n");
     for (size_t i = 0; i < n_lines; i++) {
         assert (i < n_lines);

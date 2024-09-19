@@ -10,35 +10,11 @@
 #include "output.h"
 
 
-void read_from_file (const char file_name[], struct Text_t *readed_text) {
+void create_text_from_file (const char file_name[], struct Text_t *readed_text) {
     assert (readed_text);
 
-    FILE *text_file = fopen (file_name, "r");
-
-    if (!text_file) {
-        printf ("Can't open file with text!");
-        return;
-    }
-
-    size_t file_size = get_file_size(text_file);
-
-    if (!file_size) {
-        printf ("Can't get file size!");
-        return;
-    }
-
-    printf ("Text file size = %d bytes\n\n", file_size);
-
-    readed_text->text_file_size = file_size;
-
-    readed_text->buffer_size = file_size + 1 * sizeof(char);
-
-    printf ("Reading text from file\n");
-
     size_t symbols_readed = 0;
-    char *text_array = read_file_to_buffer (text_file, readed_text, &symbols_readed);
-
-    fclose(text_file);
+    char *text_array = read_file_to_buffer (file_name, readed_text, &symbols_readed);
 
     if (!text_array)
         return;
@@ -65,17 +41,37 @@ void read_from_file (const char file_name[], struct Text_t *readed_text) {
     readed_text->ptr_array = pointer_array;
 
     printf ("Filling pointers array\n");
-    fill_pointer_array (readed_text, n_lines, symbols_readed);
+    fill_pointer_array (readed_text, symbols_readed);
 
     print_pointer_array (readed_text->ptr_array, n_lines);
 }
 
-char *read_file_to_buffer (FILE *file_with_text, struct Text_t *readed_text, size_t *symbols_readed) {
-    assert (file_with_text);
+char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, size_t *symbols_readed) {
     assert (readed_text);
     assert (symbols_readed);
 
-    char *text_array = (char *) calloc (readed_text->buffer_size, 1);
+    FILE *file_with_text = fopen (file_name, "r");
+
+    if (!file_with_text) {
+        printf ("Can't open file with text!");
+        return NULL;
+    }
+
+    size_t file_size = get_file_size(file_with_text);
+
+    if (!file_size) {
+        printf ("Can't get file size!");
+        return NULL;
+    }
+
+    printf ("Text file size = %d bytes\n\n", file_size);
+
+    readed_text->text_file_size = file_size;
+    readed_text->buffer_size    = file_size + 1 * sizeof(char);
+
+    printf ("Reading text from file\n");
+
+    char *text_array = (char *) calloc (file_size / sizeof(char) + 1, sizeof(char));
 
     if (!text_array) {
         printf ("Failed to allocate memory for text array!");
@@ -86,7 +82,9 @@ char *read_file_to_buffer (FILE *file_with_text, struct Text_t *readed_text, siz
 
     *symbols_readed = fread (text_array, 1, readed_text->text_file_size, file_with_text);
 
-    printf ("Start of text array = %lu\n\n", (unsigned long) text_array);
+    printf ("Beginning of text array = %lu\n\n", (unsigned long) text_array);
+
+    fclose(file_with_text);
 
     return text_array;
 }
@@ -107,8 +105,9 @@ size_t count_lines (char *text_array, const size_t symbols_readed) {
     return line_no + 1;
 }
 
-void fill_pointer_array (struct Text_t *readed_text, const size_t num_lines, const size_t symbols_readed) {
+void fill_pointer_array (struct Text_t *readed_text, const size_t symbols_readed) {
     assert (readed_text);
+    assert (readed_text->num_lines != 0);
 
     char **pointers_array_pointer = readed_text->ptr_array;
     pointers_array_pointer[0] = readed_text->buffer;
@@ -122,7 +121,7 @@ void fill_pointer_array (struct Text_t *readed_text, const size_t num_lines, con
         symbol_pointer++;
 
         if (symbol_pointer < readed_text->buffer + symbols_readed) {
-            assert (pointers_array_pointer + 1 < readed_text->ptr_array + num_lines);
+            assert (pointers_array_pointer + 1 < readed_text->ptr_array + readed_text->num_lines);
             *(++pointers_array_pointer) = symbol_pointer;
         }
     }
