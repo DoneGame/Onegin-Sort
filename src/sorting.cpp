@@ -42,7 +42,26 @@ int my_strcmp (const void *string1, const void *string2) {
     const char *real_string_2 = * (const char **) string2;
 
     size_t i = 0;
-    for (; real_string_1[i] != '\0' && tolower(real_string_1[i]) == tolower(real_string_2[i]); i++) {}; 
+    size_t j = 0;
+    while (real_string_1[i] != '\0' && real_string_2[j] != '\0') {
+        if (isalpha(real_string_1[i]) && isalpha(real_string_2[j])) {
+            if (tolower(real_string_1[i]) != tolower(real_string_2[j]))
+                break;
+            else {
+                i++;
+                j++;
+                continue;
+            }
+        }
+
+        if (!isalpha(real_string_1[i])) {
+            i++;
+            continue;
+        }
+
+        if (!isalpha(real_string_2[j]))
+            j++;
+    }
     
     return tolower(real_string_1[i]) - tolower(real_string_2[i]);
 }

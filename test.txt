@@ -1,6 +1,6 @@
-abc
-aBb
-Bbc
-AaA
-aAaa
-aaaAs
+<a...bc
+aB"b"
+Bb?c
+Aa  A
+aA  --- aa
+aaa,,,As
