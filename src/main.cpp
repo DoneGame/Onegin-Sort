@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "main.h"
 #include "input.h"
 #include "sorting.h"
 #include "output.h"
@@ -15,13 +16,29 @@ int main () {
     if (!original_text.num_lines)
         return 1;
 
+    printf ("\nOriginal array of pointers before sorting:\n");
+    print_pointer_array (original_text.ptr_array, original_text.num_lines);
+
     struct Text_t sorted_text = bubble_sort (original_text);
+
+    printf ("Sorted array of pointers:\n");
+    print_pointer_array (sorted_text.ptr_array, sorted_text.num_lines);
+
+    printf ("Original array of pointers after sorting:\n");
+    print_pointer_array (original_text.ptr_array, original_text.num_lines);
 
     printf ("Sorted text:\n");
     print_text (sorted_text);
 
-    free(original_text.buffer);    original_text.buffer    = NULL;
-    free(original_text.ptr_array); original_text.ptr_array = NULL;
+    destroy_text (original_text);
 
     return 0;
+}
+
+void destroy_text (struct Text_t text_to_destroy) {
+    free (text_to_destroy.buffer);    text_to_destroy.buffer    = NULL;
+    free (text_to_destroy.ptr_array); text_to_destroy.ptr_array = NULL;
+    text_to_destroy.num_lines      = 0;
+    text_to_destroy.buffer_size    = 0;
+    text_to_destroy.text_file_size = 0;
 }

@@ -26,24 +26,11 @@ void create_text_from_file (const char file_name[], struct Text_t *readed_text) 
 
     readed_text->num_lines = n_lines;
 
-    printf ("Creating pointers array\n");
+    printf ("Creating pointer array\n");
+    create_pointer_array (readed_text);
 
-    char **pointer_array = (char **) calloc (n_lines, sizeof(char *));
-
-    if (!pointer_array) {
-        printf ("Failed to allocate memory for pointers array!");
-        readed_text->num_lines = 0;
-        return;
-    }
-
-    printf ("Pointer array = %lu\n\n", (unsigned long) pointer_array);
-
-    readed_text->ptr_array = pointer_array;
-
-    printf ("Filling pointers array\n");
+    printf ("Filling pointer array\n");
     fill_pointer_array (readed_text, symbols_readed);
-
-    print_pointer_array (readed_text->ptr_array, n_lines);
 }
 
 char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, size_t *symbols_readed) {
@@ -103,6 +90,20 @@ size_t count_lines (char *text_array, const size_t symbols_readed) {
     }
 
     return line_no + 1;
+}
+
+void create_pointer_array (struct Text_t *readed_text) {
+    char **pointer_array = (char **) calloc (readed_text->num_lines, sizeof(char *));
+
+    if (!pointer_array) {
+        printf ("Failed to allocate memory for pointers array!");
+        readed_text->num_lines = 0;
+        return;
+    }
+
+    printf ("Pointer array = %lu\n\n", (unsigned long) pointer_array);
+
+    readed_text->ptr_array = pointer_array;
 }
 
 void fill_pointer_array (struct Text_t *readed_text, const size_t symbols_readed) {
