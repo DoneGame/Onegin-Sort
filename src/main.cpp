@@ -69,16 +69,15 @@ int main () {
     printf ("Quick sorted text:\n");
     print_text (quick_sorted_text);
 
-    /*
-    printf ("Sorting text by ends...\n");
-    qsort (quick_sorted_text.ptr_array, quick_sorted_text.num_lines, sizeof(char *), my_reverse_strcmp);
+
+    printf ("\nSorting text by ends...\n");
+    qsort (quick_sorted_text.ptr_array, quick_sorted_text.num_lines, sizeof(char *), my_inverse_strcmp);
 
     printf ("\nSorted by line ends array of pointers:\n");
     print_pointer_array (quick_sorted_text.ptr_array, quick_sorted_text.num_lines);
 
     printf ("Sorted by line ends text:\n");
     print_text (quick_sorted_text);
-    */
 
 
     // printf ("Original array of pointers after sorting:\n");
