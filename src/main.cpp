@@ -7,12 +7,13 @@
 #include "sorting.h"
 #include "output.h"
 
-const char text_filename[] = "test.txt"; // onegin_en.txt
+const char text_filename[] = "onegin_en.txt"; // onegin_en.txt
 
 
 int main () {
     struct Text_t original_text = {.ptr_array = NULL, .num_lines = 0, .buffer = NULL, .buffer_size = 0, .text_file_size = 0};
 
+    printf ("# Reading original text from file...");
     create_text_from_file (text_filename, &original_text);
 
     if (!original_text.num_lines)
@@ -31,15 +32,15 @@ int main () {
 
     printf ("\nCopying pointer array for bubble sorting\n");
 
+    copy_pointer_array (&original_text, &bubble_sorted_text);
+
     if (!bubble_sorted_text.num_lines)
         return 1;
-
-    copy_pointer_array (&original_text, &bubble_sorted_text);
 
     printf ("Unsorted array of pointers:\n");
     print_pointer_array (bubble_sorted_text.ptr_array, bubble_sorted_text.num_lines);
 
-    printf ("Bubble sorting text...\n");
+    printf ("# Bubble sorting text...\n");
     bubble_sort (bubble_sorted_text.ptr_array, bubble_sorted_text.num_lines, sizeof(char *), my_strcmp);
 
     printf ("\nBubble sorted array of pointers:\n");
@@ -55,12 +56,12 @@ int main () {
 
     printf ("\nCopying pointer array for quick sorting\n");
 
+    copy_pointer_array (&original_text, &quick_sorted_text);
+
     if (!quick_sorted_text.num_lines)
         return 1;
 
-    copy_pointer_array (&original_text, &quick_sorted_text);
-
-    printf ("Quick sorting text...\n");
+    printf ("# Quick sorting text...\n");
     qsort (quick_sorted_text.ptr_array, quick_sorted_text.num_lines, sizeof(char *), my_strcmp);
 
     printf ("\nQuick sorted array of pointers:\n");
@@ -70,7 +71,7 @@ int main () {
     print_text (quick_sorted_text);
 
 
-    printf ("\nSorting text by ends...\n");
+    printf ("\n# Sorting text by ends...\n");
     qsort (quick_sorted_text.ptr_array, quick_sorted_text.num_lines, sizeof(char *), my_inverse_strcmp);
 
     printf ("\nSorted by line ends array of pointers:\n");
@@ -85,7 +86,8 @@ int main () {
 
 
     destroy_text (original_text);
-
+    destroy_text (bubble_sorted_text);
+    destroy_text (quick_sorted_text);
     return 0;
 }
 
