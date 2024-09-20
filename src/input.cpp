@@ -30,8 +30,7 @@ char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, s
 
     printf ("Text file size = %d bytes\n\n", file_size);
 
-    readed_text->text_file_size = file_size;
-    readed_text->buffer_size    = file_size + 1 * sizeof(char);
+    readed_text->buffer_size = file_size + 1 * sizeof(char);
 
     printf ("Reading text from file\n");
 
@@ -44,7 +43,7 @@ char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, s
 
     readed_text->buffer = text_array;
 
-    *symbols_readed = fread (text_array, 1, readed_text->text_file_size, file_with_text);
+    *symbols_readed = fread (text_array, 1, file_size, file_with_text);
 
     printf ("Beginning of text array = %lu\n\n", (unsigned long) text_array);
 

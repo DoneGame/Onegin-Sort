@@ -4,6 +4,7 @@
 
 #include "text_struct.h"
 #include "input.h"
+#include "output.h"
 
 
 void create_text_from_file (struct Text_t *readed_text, const char file_name[]) {
@@ -22,33 +23,34 @@ void create_text_from_file (struct Text_t *readed_text, const char file_name[]) 
 
     readed_text->num_lines = n_lines;
 
-    printf ("Creating pointer array\n");
-    create_pointer_array (readed_text);
+    printf ("Creating lines array\n");
+    create_lines_array (readed_text);
 
-    printf ("Filling pointer array\n");
-    fill_pointer_array (readed_text, symbols_readed);
+    printf ("Filling lines array\n");
+    fill_lines_array (readed_text, symbols_readed);
 }
 
-void create_pointer_array (struct Text_t *readed_text) {
-    char **pointer_array = (char **) calloc (readed_text->num_lines, sizeof(char *));
+void create_lines_array (struct Text_t *readed_text) {
+    struct Line_t *lines_array = (struct Line_t *) calloc (readed_text->num_lines, sizeof(struct Line_t));
 
-    if (!pointer_array) {
+    if (!lines_array) {
         printf ("Failed to allocate memory for pointers array!");
         readed_text->num_lines = 0;
         return;
     }
 
-    printf ("Pointer array = %lu\n\n", (unsigned long) pointer_array);
+    printf ("Line array = %lu\n\n", (unsigned long) lines_array);
 
-    readed_text->ptr_array = pointer_array;
+    readed_text->lines_array = lines_array;
 }
 
-void fill_pointer_array (struct Text_t *readed_text, const size_t symbols_readed) {
+void fill_lines_array (struct Text_t *readed_text, const size_t symbols_readed) {
     assert (readed_text);
     assert (readed_text->num_lines != 0);
 
-    char **pointers_array_pointer = readed_text->ptr_array;
-    pointers_array_pointer[0] = readed_text->buffer;
+    struct Line_t *lines_array_pointer = readed_text->lines_array;
+    lines_array_pointer[0].beginning = readed_text->buffer;
+    lines_array_pointer[0].length = 0;
 
     for (char *symbol_pointer = readed_text->buffer; (symbol_pointer = strchr(symbol_pointer, '\n')) != NULL; ) {
         printf ("new line = %lu\n", (unsigned long) symbol_pointer);
@@ -56,32 +58,37 @@ void fill_pointer_array (struct Text_t *readed_text, const size_t symbols_readed
         assert (symbol_pointer > NULL && symbol_pointer < readed_text->buffer + readed_text->buffer_size / sizeof(char));
 
         *symbol_pointer = '\0';
+        (*lines_array_pointer).length = (symbol_pointer - (*lines_array_pointer).beginning) / sizeof(char);
         symbol_pointer++;
 
         if (symbol_pointer < readed_text->buffer + symbols_readed) {
-            assert (pointers_array_pointer + 1 < readed_text->ptr_array + readed_text->num_lines);
-            *(++pointers_array_pointer) = symbol_pointer;
+            assert (lines_array_pointer + 1 < readed_text->lines_array + readed_text->num_lines);
+            (*(++lines_array_pointer)).beginning = symbol_pointer;
         }
     }
+
+    struct Line_t *last_line_ptr = readed_text->lines_array + readed_text->num_lines - 1;
+    assert ((*last_line_ptr).beginning);
+    if (last_line_ptr->length == 0)
+        last_line_ptr->length = (readed_text->buffer + symbols_readed - last_line_ptr->beginning) / sizeof(char);
 }
 
-void copy_pointer_array (struct Text_t *from_text, struct Text_t *to_text) {
+void copy_lines_array (struct Text_t *from_text, struct Text_t *to_text) {
     assert (from_text);
     assert (from_text->num_lines != 0);
     assert (to_text);
 
     to_text->num_lines = from_text->num_lines;
 
-    create_pointer_array (to_text);
+    create_lines_array (to_text);
 
     for (size_t i = 0; i < from_text->num_lines; i++)
-        to_text->ptr_array[i] = from_text->ptr_array[i];
+        to_text->lines_array[i] = from_text->lines_array[i];
 }
 
 void destroy_text (struct Text_t text_to_destroy) {
-    free (text_to_destroy.buffer);    text_to_destroy.buffer    = NULL;
-    free (text_to_destroy.ptr_array); text_to_destroy.ptr_array = NULL;
-    text_to_destroy.num_lines      = 0;
-    text_to_destroy.buffer_size    = 0;
-    text_to_destroy.text_file_size = 0;
+    free (text_to_destroy.buffer);      text_to_destroy.buffer    = NULL;
+    free (text_to_destroy.lines_array); text_to_destroy.lines_array = NULL;
+    text_to_destroy.num_lines   = 0;
+    text_to_destroy.buffer_size = 0;
 }

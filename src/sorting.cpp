@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "sorting.h"
+#include "text_struct.h"
 
 
 void bubble_sort (void *data, size_t size, size_t el_size, compare_func_t compare_func) {
@@ -34,12 +35,15 @@ void byte_by_byte_copy (char *from_ptr, char *to_ptr, size_t el_size) {
         *(to_ptr + byte_shift) = *(from_ptr + byte_shift);
 }
 
-int my_strcmp (const void *string1, const void *string2) {
+int my_strcmp (const void *string1, const void *string2) { //TODO
     assert (string1);
     assert (string2);
 
-    const char *real_string_1 = * (const char **) string1;
-    const char *real_string_2 = * (const char **) string2;
+    const Line_t line_1 = * (const Line_t *) string1;
+    const Line_t line_2 = * (const Line_t *) string2;
+
+    const char *real_string_1 = line_1.beginning;
+    const char *real_string_2 = line_2.beginning;
 
     size_t i = 0;
     size_t j = 0;
@@ -66,12 +70,15 @@ int my_strcmp (const void *string1, const void *string2) {
     return tolower(real_string_1[i]) - tolower(real_string_2[j]);
 }
 
-int my_inverse_strcmp (const void *string1, const void *string2) {
+int my_inverse_strcmp (const void *string1, const void *string2) { //TODO
     assert (string1);
     assert (string2);
 
-    const char *real_string_1 = * (const char **) string1;
-    const char *real_string_2 = * (const char **) string2;
+    const Line_t line_1 = * (const Line_t *) string1;
+    const Line_t line_2 = * (const Line_t *) string2;
+
+    const char *real_string_1 = line_1.beginning;
+    const char *real_string_2 = line_2.beginning;
 
     size_t str_1_len = strlen(real_string_1);
     size_t str_2_len = strlen(real_string_2);

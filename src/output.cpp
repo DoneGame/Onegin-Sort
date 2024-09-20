@@ -7,13 +7,15 @@
 
 
 void print_text (const struct Text_t text) {
+    assert (text.lines_array);
+
     for (size_t i = 0; i < text.num_lines; i++) {
         char str_no[10] = ""; // 10 - maximum length of unsigned int in base 10
         itoa (i, str_no, 10);
 
         assert (i < text.num_lines);
-        assert (text.ptr_array[i]);
-        print_str (str_no, text.ptr_array[i]);
+        assert (text.lines_array[i].beginning);
+        print_str (str_no, text.lines_array[i].beginning);
     }
 }
 
@@ -26,13 +28,13 @@ void print_str (const char str_name[], const char *string) {
     printf ("\n");
 }
 
-void print_pointer_array (char **ptr_array, const size_t n_lines) {
-    assert (ptr_array);
+void print_lines_array (struct Line_t *lines_array, const size_t n_lines) {
+    assert (lines_array);
 
     for (size_t i = 0; i < n_lines; i++) {
         assert (i < n_lines);
 
-        printf ("Str %d = %lu\n", i, (unsigned long) ptr_array[i]);
+        printf ("Str %d = %lu, len = %lu\n", i, (unsigned long) lines_array[i].beginning, lines_array[i].length);
     }
     printf ("\n");
 }
