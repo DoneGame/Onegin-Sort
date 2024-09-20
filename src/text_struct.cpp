@@ -58,12 +58,12 @@ void fill_lines_array (struct Text_t *readed_text, const size_t symbols_readed) 
         assert (symbol_pointer > NULL && symbol_pointer < readed_text->buffer + readed_text->buffer_size / sizeof(char));
 
         *symbol_pointer = '\0';
-        (*lines_array_pointer).length = (symbol_pointer - (*lines_array_pointer).beginning) / sizeof(char);
+        lines_array_pointer->length = (symbol_pointer - lines_array_pointer->beginning) / sizeof(char);
         symbol_pointer++;
 
         if (symbol_pointer < readed_text->buffer + symbols_readed) {
             assert (lines_array_pointer + 1 < readed_text->lines_array + readed_text->num_lines);
-            (*(++lines_array_pointer)).beginning = symbol_pointer;
+            (++lines_array_pointer)->beginning = symbol_pointer;
         }
     }
 
@@ -87,7 +87,7 @@ void copy_lines_array (struct Text_t *from_text, struct Text_t *to_text) {
 }
 
 void destroy_text (struct Text_t text_to_destroy) {
-    free (text_to_destroy.buffer);      text_to_destroy.buffer    = NULL;
+    free (text_to_destroy.buffer);      text_to_destroy.buffer      = NULL;
     free (text_to_destroy.lines_array); text_to_destroy.lines_array = NULL;
     text_to_destroy.num_lines   = 0;
     text_to_destroy.buffer_size = 0;

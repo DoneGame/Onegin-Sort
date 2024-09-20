@@ -80,8 +80,8 @@ int my_inverse_strcmp (const void *string1, const void *string2) { //TODO
     const char *real_string_1 = line_1.beginning;
     const char *real_string_2 = line_2.beginning;
 
-    size_t str_1_len = strlen(real_string_1);
-    size_t str_2_len = strlen(real_string_2);
+    size_t str_1_len = line_1.length;
+    size_t str_2_len = line_2.length;
 
     size_t i = str_1_len - 1;
     size_t j = str_2_len - 1;

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
 
 #include "output.h"
 
@@ -24,7 +25,7 @@ void print_str (const char str_name[], const char *string) {
 
     printf ("%s = ", str_name);
     for (size_t i = 0; i < strlen(string); i++)
-        printf ("%c(%3d) ", string[i], string[i]);
+        printf ("%c(%3d) ", string[i], tolower(string[i]));
     printf ("\n");
 }
 
@@ -34,7 +35,7 @@ void print_lines_array (struct Line_t *lines_array, const size_t n_lines) {
     for (size_t i = 0; i < n_lines; i++) {
         assert (i < n_lines);
 
-        printf ("Str %d = %lu, len = %lu\n", i, (unsigned long) lines_array[i].beginning, lines_array[i].length);
+        printf ("Str %d = %lu, len = %lu\n", i, (unsigned long) lines_array[i].beginning, (unsigned long) lines_array[i].length);
     }
     printf ("\n");
 }
