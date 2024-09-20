@@ -19,15 +19,19 @@ void bubble_sort (void *data, size_t size, size_t el_size, compare_func_t compar
             assert (j + 1 < size);
 
             if (compare_func (data_ + j*el_size, data_ + (j + 1)*el_size) > 0) {
-                uint64_t tmp = 0;
-                char *pointer_to_tmp = (char *) &tmp;
-
-                byte_by_byte_copy (data_ + j*el_size,        pointer_to_tmp,           el_size);
-                byte_by_byte_copy (data_ + (j + 1)*el_size,  data_ + j*el_size,        el_size);
-                byte_by_byte_copy (pointer_to_tmp,           data_ + (j + 1)*el_size,  el_size);
+                swap (data_ + j*el_size, data_ + (j + 1)*el_size, el_size);
             }
         }
     }
+}
+
+void swap (char *first_el_pointer, char *second_el_pointer, size_t el_size) {
+    uint64_t tmp = 0;
+    char *tmp_pointer = (char *) &tmp;
+
+    byte_by_byte_copy (first_el_pointer,  tmp_pointer,       el_size);
+    byte_by_byte_copy (second_el_pointer, first_el_pointer,  el_size);
+    byte_by_byte_copy (tmp_pointer,       second_el_pointer, el_size);
 }
 
 void byte_by_byte_copy (char *from_ptr, char *to_ptr, size_t el_size) {
@@ -35,7 +39,7 @@ void byte_by_byte_copy (char *from_ptr, char *to_ptr, size_t el_size) {
         *(to_ptr + byte_shift) = *(from_ptr + byte_shift);
 }
 
-int my_strcmp (const void *string1, const void *string2) { //TODO
+int my_strcmp (const void *string1, const void *string2) {
     assert (string1);
     assert (string2);
 
@@ -70,7 +74,7 @@ int my_strcmp (const void *string1, const void *string2) { //TODO
     return tolower(real_string_1[i]) - tolower(real_string_2[j]);
 }
 
-int my_inverse_strcmp (const void *string1, const void *string2) { //TODO
+int my_inverse_strcmp (const void *string1, const void *string2) {
     assert (string1);
     assert (string2);
 

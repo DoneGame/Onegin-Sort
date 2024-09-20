@@ -31,6 +31,9 @@ void create_text_from_file (struct Text_t *readed_text, const char file_name[]) 
 }
 
 void create_lines_array (struct Text_t *readed_text) {
+    assert (readed_text);
+    assert (readed_text->num_lines != 0);
+
     struct Line_t *lines_array = (struct Line_t *) calloc (readed_text->num_lines, sizeof(struct Line_t));
 
     if (!lines_array) {
@@ -68,25 +71,25 @@ void fill_lines_array (struct Text_t *readed_text, const size_t symbols_readed) 
     }
 
     struct Line_t *last_line_ptr = readed_text->lines_array + readed_text->num_lines - 1;
-    assert ((*last_line_ptr).beginning);
+    assert (last_line_ptr->beginning);
     if (last_line_ptr->length == 0)
         last_line_ptr->length = (readed_text->buffer + symbols_readed - last_line_ptr->beginning) / sizeof(char);
 }
 
-void copy_lines_array (struct Text_t *from_text, struct Text_t *to_text) {
-    assert (from_text);
-    assert (from_text->num_lines != 0);
+void copy_lines_array (const struct Text_t from_text, struct Text_t *to_text) {
+    assert (from_text.num_lines != 0);
     assert (to_text);
 
-    to_text->num_lines = from_text->num_lines;
+    to_text->num_lines = from_text.num_lines;
 
     create_lines_array (to_text);
 
-    for (size_t i = 0; i < from_text->num_lines; i++)
-        to_text->lines_array[i] = from_text->lines_array[i];
+    for (size_t i = 0; i < from_text.num_lines; i++)
+        to_text->lines_array[i] = from_text.lines_array[i];
 }
 
 void print_text (const struct Text_t text, bool show_original) {
+    assert (text.num_lines != 0);
     assert (text.lines_array);
 
     for (size_t i = 0; i < text.num_lines; i++) {

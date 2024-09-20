@@ -27,7 +27,7 @@ void print_str (const char str_name[], const char *string, bool show_original) {
     printf ("\n");
 }
 
-void print_lines_array (struct Line_t *lines_array, const size_t n_lines) {
+void print_lines_array (const struct Line_t *lines_array, const size_t n_lines) {
     assert (lines_array);
 
     for (size_t i = 0; i < n_lines; i++) {

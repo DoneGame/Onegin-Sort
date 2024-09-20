@@ -39,6 +39,8 @@ onegin.exe onegin_en.txt
 
 #### Abbreviations in tooltips and code:
 <pre>
-el = element
+el  = element
+str = string
+ptr = pointer
 </pre>
  

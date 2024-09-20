@@ -76,7 +76,7 @@ size_t get_file_size (const FILE *file) {
     if (file_desc == -1)
         return 0;
 
-    struct stat file_info;
+    struct stat file_info = {}; 
 
     if (fstat(file_desc, &file_info) != 0)
         return 0;

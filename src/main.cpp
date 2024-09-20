@@ -37,7 +37,7 @@ int main (const int argc, const char *argv[]) {
                                         .buffer = original_text.buffer, .buffer_size = original_text.buffer_size};
 
     printf ("\nCopying lines array for bubble sorting\n");
-    copy_lines_array (&original_text, &bubble_sorted_text);
+    copy_lines_array (original_text, &bubble_sorted_text);
 
     if (!bubble_sorted_text.num_lines)
         return 1;
@@ -59,7 +59,7 @@ int main (const int argc, const char *argv[]) {
                                        .buffer = original_text.buffer, .buffer_size = original_text.buffer_size};
 
     printf ("\nCopying lines array for quick sorting\n");
-    copy_lines_array (&original_text, &quick_sorted_text);
+    copy_lines_array (original_text, &quick_sorted_text);
 
     if (!quick_sorted_text.num_lines)
         return 1;
@@ -74,10 +74,10 @@ int main (const int argc, const char *argv[]) {
     print_text (quick_sorted_text, 0);
 
 
-    printf ("\n# Sorting text by ends...\n");
+    printf ("\n# Sorting text by ends of lines...\n");
     qsort (quick_sorted_text.lines_array, quick_sorted_text.num_lines, sizeof(struct Line_t), my_inverse_strcmp);
 
-    printf ("\nSorted by line ends array of lines:\n");
+    printf ("\nArray of lines sorted by their ends:\n");
     print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
 
     printf ("Sorted by line ends text:\n");
