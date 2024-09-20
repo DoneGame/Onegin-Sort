@@ -7,20 +7,26 @@
 #include "output.h"
 #include "text_struct.h"
 
-const char text_filename[] = "test.txt"; // onegin_en.txt
+const char default_text_filename[] = "test.txt"; // onegin_en.txt
 
 
-int main () {
+int main (const int argc, const char *argv[]) {
     struct Text_t original_text = {.lines_array = NULL, .num_lines = 0, 
                                    .buffer = NULL, .buffer_size = 0};
 
-    printf ("# Reading original text from file...");
-    create_text_from_file (&original_text, text_filename);
+    if (argc > 1) {
+        printf ("# Reading original text from %s...\n", argv[1]);
+        create_text_from_file (&original_text, argv[1]);
+    }
+    else {
+        printf ("# Reading original text from %s...\n", default_text_filename);
+        create_text_from_file (&original_text, default_text_filename);
+    }
 
     if (!original_text.num_lines)
         return 1;
 
-    printf ("\nOriginal array of lines before sorting:\n");
+    printf ("Original array of lines before sorting:\n");
     print_lines_array (original_text.lines_array, original_text.num_lines);
 
     printf ("Original text:\n");
@@ -31,7 +37,6 @@ int main () {
                                         .buffer = original_text.buffer, .buffer_size = original_text.buffer_size};
 
     printf ("\nCopying lines array for bubble sorting\n");
-
     copy_lines_array (&original_text, &bubble_sorted_text);
 
     if (!bubble_sorted_text.num_lines)
@@ -54,7 +59,6 @@ int main () {
                                        .buffer = original_text.buffer, .buffer_size = original_text.buffer_size};
 
     printf ("\nCopying lines array for quick sorting\n");
-
     copy_lines_array (&original_text, &quick_sorted_text);
 
     if (!quick_sorted_text.num_lines)
