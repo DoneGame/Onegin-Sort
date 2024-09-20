@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdbool.h>
 
 #include "input.h"
 #include "sorting.h"
 #include "output.h"
 #include "text_struct.h"
 
-const char default_text_filename[] = "test.txt"; // onegin_en.txt
+const char default_text_filename[] = "onegin_en_example.txt";
 
 
 int main (const int argc, const char *argv[]) {
@@ -30,7 +31,7 @@ int main (const int argc, const char *argv[]) {
     print_lines_array (original_text.lines_array, original_text.num_lines);
 
     printf ("Original text:\n");
-    print_text (original_text, 1);
+    print_text (original_text, true, false);
 
 
     struct Text_t bubble_sorted_text = {.lines_array = NULL, .num_lines = original_text.num_lines, 
@@ -52,7 +53,7 @@ int main (const int argc, const char *argv[]) {
     print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
 
     printf ("Bubble sorted text:\n");
-    print_text (bubble_sorted_text, 0);
+    print_text (bubble_sorted_text, false, false);
 
 
     struct Text_t quick_sorted_text = {.lines_array = NULL, .num_lines = original_text.num_lines, 
@@ -71,7 +72,7 @@ int main (const int argc, const char *argv[]) {
     print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
 
     printf ("Quick sorted text:\n");
-    print_text (quick_sorted_text, 0);
+    print_text (quick_sorted_text, true, false);
 
 
     printf ("\n# Sorting text by ends of lines...\n");
@@ -81,11 +82,11 @@ int main (const int argc, const char *argv[]) {
     print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
 
     printf ("Sorted by line ends text:\n");
-    print_text (quick_sorted_text, 0);
+    print_text (quick_sorted_text, true, false);
 
 
-    // printf ("Original array of lines after sorting:\n");
-    // print_lines_array (original_text.lines_array, original_text.num_lines);
+    printf ("\nOriginal text:\n");
+    print_text (original_text, true, false);
 
 
     destroy_text (&original_text);

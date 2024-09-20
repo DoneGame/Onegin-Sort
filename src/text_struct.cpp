@@ -88,7 +88,7 @@ void copy_lines_array (const struct Text_t from_text, struct Text_t *to_text) {
         to_text->lines_array[i] = from_text.lines_array[i];
 }
 
-void print_text (const struct Text_t text, bool show_original) {
+void print_text (const struct Text_t text, bool show_original, bool debug) {
     assert (text.num_lines != 0);
     assert (text.lines_array);
 
@@ -98,7 +98,8 @@ void print_text (const struct Text_t text, bool show_original) {
 
         assert (i < text.num_lines);
         assert (text.lines_array[i].beginning);
-        print_str (str_no, text.lines_array[i].beginning, show_original);
+
+        print_str (str_no, text.lines_array[i].beginning, show_original, debug);
     }
 }
 
