@@ -5,7 +5,6 @@
 #include <string.h>
 
 #include "sorting.h"
-#include "output.h"
 
 
 void bubble_sort (void *data, size_t size, size_t el_size, compare_func_t compare_func) {
@@ -116,6 +115,9 @@ int my_inverse_strcmp (const void *string1, const void *string2) {
             j--;
         }
     }
+
+    assert (i <= str_1_len);
+    assert (j <= str_2_len);
     
     return tolower(real_string_1[i]) - tolower(real_string_2[j]);
 }
