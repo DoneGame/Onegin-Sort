@@ -1,4 +1,4 @@
-# Quadratic equation solver
+# Onegin sorter
 
 ### CLI program for sorting big texts (such as "Eugene Onegin" by A. Pushkin) line by line
 
