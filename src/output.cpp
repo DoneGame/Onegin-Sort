@@ -3,29 +3,27 @@
 #include <string.h>
 #include <assert.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #include "output.h"
 
 
-void print_text (const struct Text_t text) {
-    assert (text.lines_array);
-
-    for (size_t i = 0; i < text.num_lines; i++) {
-        char str_no[10] = ""; // 10 - maximum length of unsigned int in base 10
-        itoa (i, str_no, 10);
-
-        assert (i < text.num_lines);
-        assert (text.lines_array[i].beginning);
-        print_str (str_no, text.lines_array[i].beginning);
-    }
-}
-
-void print_str (const char str_name[], const char *string) {
+void print_str (const char str_name[], const char *string, bool show_original) {
     assert (string);
 
     printf ("%s = ", str_name);
-    for (size_t i = 0; i < strlen(string); i++)
-        printf ("%c(%3d) ", string[i], tolower(string[i]));
+
+    if (show_original) {
+        for (size_t i = 0; i < strlen(string); i++)
+            printf ("%c(%3d) ", string[i], string[i]);
+    }
+    else {
+        for (size_t i = 0; i < strlen(string); i++) {
+            if (isalpha(string[i]))
+                printf ("%c(%3d) ", tolower(string[i]), tolower(string[i]));
+        }
+    }
+
     printf ("\n");
 }
 

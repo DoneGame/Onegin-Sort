@@ -26,11 +26,11 @@ int main (const int argc, const char *argv[]) {
     if (!original_text.num_lines)
         return 1;
 
-    printf ("Original array of lines before sorting:\n");
+    printf ("\nOriginal array of lines before sorting:\n");
     print_lines_array (original_text.lines_array, original_text.num_lines);
 
     printf ("Original text:\n");
-    print_text (original_text);
+    print_text (original_text, 1);
 
 
     struct Text_t bubble_sorted_text = {.lines_array = NULL, .num_lines = original_text.num_lines, 
@@ -52,7 +52,7 @@ int main (const int argc, const char *argv[]) {
     print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
 
     printf ("Bubble sorted text:\n");
-    print_text (bubble_sorted_text);
+    print_text (bubble_sorted_text, 0);
 
 
     struct Text_t quick_sorted_text = {.lines_array = NULL, .num_lines = original_text.num_lines, 
@@ -71,7 +71,7 @@ int main (const int argc, const char *argv[]) {
     print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
 
     printf ("Quick sorted text:\n");
-    print_text (quick_sorted_text);
+    print_text (quick_sorted_text, 0);
 
 
     printf ("\n# Sorting text by ends...\n");
@@ -81,15 +81,15 @@ int main (const int argc, const char *argv[]) {
     print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
 
     printf ("Sorted by line ends text:\n");
-    print_text (quick_sorted_text);
+    print_text (quick_sorted_text, 0);
 
 
     // printf ("Original array of lines after sorting:\n");
     // print_lines_array (original_text.lines_array, original_text.num_lines);
 
 
-    destroy_text (original_text);
-    destroy_text (bubble_sorted_text);
-    destroy_text (quick_sorted_text);
+    destroy_text (&original_text);
+    destroy_text (&bubble_sorted_text);
+    destroy_text (&quick_sorted_text);
     return 0;
 }

@@ -32,8 +32,6 @@ char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, s
 
     readed_text->buffer_size = file_size + 1 * sizeof(char);
 
-    printf ("Reading text from file\n");
-
     char *text_array = (char *) calloc (file_size / sizeof(char) + 1, sizeof(char));
 
     if (!text_array) {

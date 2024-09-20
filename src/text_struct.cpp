@@ -86,9 +86,22 @@ void copy_lines_array (struct Text_t *from_text, struct Text_t *to_text) {
         to_text->lines_array[i] = from_text->lines_array[i];
 }
 
-void destroy_text (struct Text_t text_to_destroy) {
-    free (text_to_destroy.buffer);      text_to_destroy.buffer      = NULL;
-    free (text_to_destroy.lines_array); text_to_destroy.lines_array = NULL;
-    text_to_destroy.num_lines   = 0;
-    text_to_destroy.buffer_size = 0;
+void print_text (const struct Text_t text, bool show_original) {
+    assert (text.lines_array);
+
+    for (size_t i = 0; i < text.num_lines; i++) {
+        char str_no[10] = ""; // 10 - maximum length of unsigned int in base 10
+        itoa (i, str_no, 10);
+
+        assert (i < text.num_lines);
+        assert (text.lines_array[i].beginning);
+        print_str (str_no, text.lines_array[i].beginning, show_original);
+    }
+}
+
+void destroy_text (struct Text_t *text_to_destroy) {
+    free (text_to_destroy->buffer);      text_to_destroy->buffer      = NULL;
+    free (text_to_destroy->lines_array); text_to_destroy->lines_array = NULL;
+    text_to_destroy->num_lines   = 0;
+    text_to_destroy->buffer_size = 0;
 }
