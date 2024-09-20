@@ -74,41 +74,48 @@ int my_inverse_strcmp (const void *string1, const void *string2) {
     const char *real_string_1 = * (const char **) string1;
     const char *real_string_2 = * (const char **) string2;
 
-    long long str_1_len = strlen(real_string_1);
-    long long str_2_len = strlen(real_string_2);
+    size_t str_1_len = strlen(real_string_1);
+    size_t str_2_len = strlen(real_string_2);
 
-    long long i = str_1_len - 1;
-    long long j = str_2_len - 1;
-    while (i >= 0 && j >= 0) {
-        assert (i >= 0 && i < str_1_len);
-        assert (j >= 0 && j < str_2_len);
+    size_t i = str_1_len - 1;
+    size_t j = str_2_len - 1;
+    while (true) {
+        assert (i < str_1_len);
+        assert (j < str_2_len);
 
         if (isalpha(real_string_1[i]) && isalpha(real_string_2[j])) {
             if (tolower(real_string_1[i]) != tolower(real_string_2[j]))
                 break;
             else {
+                if (i == 0)
+                    return -1;
+
+                if (j == 0)
+                    return 1;
+
                 i--;
                 j--;
                 continue;
             }
         }
 
-        assert (i >= 0 && i < str_1_len);
+        assert (i < str_1_len);
         if (!isalpha(real_string_1[i])) {
+            if (i == 0)
+                return -1;
+
             i--;
             continue;
         }
 
-        assert (j >= 0 && j < str_2_len);
-        if (!isalpha(real_string_2[j]))
+        assert (j < str_2_len);
+        if (!isalpha(real_string_2[j])) {
+            if (j == 0)
+                return 1;
+             
             j--;
+        }
     }
-
-    if (i < 0)
-        i = str_1_len;
-
-    if (j < 0)
-        j = str_2_len;
     
     return tolower(real_string_1[i]) - tolower(real_string_2[j]);
 }
