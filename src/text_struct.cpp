@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
+#include <math.h>
 
 #include "text_struct.h"
 #include "input.h"
@@ -97,11 +99,70 @@ void print_text (const struct Text_t text, bool show_original, bool debug) {
     assert (text.lines_array);
 
     for (size_t i = 0; i < text.num_lines; i++) {
-        char str_no[10] = ""; // 10 - maximum length of unsigned int in base 10
+        char str_no[11] = ""; // 10 - maximum length of unsigned int in base 10
         itoa (i, str_no, 10);
 
         assert (i < text.num_lines);
         assert (text.lines_array[i].beginning);
+
+        print_str (str_no, text.lines_array[i].beginning, show_original, debug);
+    }
+}
+
+void print_inverse_sorted_text (const struct Text_t text, bool show_original, bool debug) {
+    assert (text.num_lines != 0);
+    assert (text.lines_array);
+
+    size_t max_length = 0;
+
+    if (show_original)
+        for (size_t i = 0; i < text.num_lines; i++) {
+            if (text.lines_array[i].length > max_length)
+                max_length = text.lines_array[i].length;
+        }
+    else {
+        for (size_t i = 0; i < text.num_lines; i++) {
+            size_t len_cnt = 0;
+            for (size_t symbol = 0; symbol < text.lines_array[i].length; symbol++) {
+                if (isalpha(text.lines_array[i].beginning[symbol]))
+                    len_cnt++;
+            }
+
+            if (len_cnt > max_length)
+                max_length = len_cnt;
+        }
+    }
+
+
+    for (size_t i = 0; i < text.num_lines; i++) {
+        char str_no[11] = ""; // 10 - maximum length of unsigned int in base 10
+        itoa (i, str_no, 10);
+
+        assert (i < text.num_lines);
+        assert (text.lines_array[i].beginning);
+
+        size_t len = 0;
+        if (show_original)
+            len = text.lines_array[i].length;
+        else {
+            for (size_t symbol = 0; symbol < text.lines_array[i].length; symbol++) {
+                if (isalpha(text.lines_array[i].beginning[symbol]))
+                    len++;
+            }
+        }
+
+        printf (" ");
+
+        for (size_t j = 0; j < floor(log10(text.num_lines - 1)) + 1 - strlen(str_no); j++) {
+            printf (" ");
+        }
+
+        for (size_t j = 0; j < max_length - len; j++) {
+            if (debug)
+                printf ("       ");
+            else
+                printf (" ");
+        }
 
         print_str (str_no, text.lines_array[i].beginning, show_original, debug);
     }

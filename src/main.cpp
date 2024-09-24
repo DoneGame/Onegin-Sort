@@ -105,7 +105,7 @@ int main (const int argc, const char *argv[]) {
     }
 
     printf ("Sorted by line ends text:\n");
-    print_text (quick_sorted_text, true, debug);
+    print_inverse_sorted_text (quick_sorted_text, true, debug);
 
 
     //printf ("\nOriginal text:\n");

@@ -40,6 +40,7 @@ onegin.exe test.txt
 ## Text file format
 - The file must not contain empty lines (exept the final one)
 - All characters must be contained in the ASCII table (Latin letters, numbers and punctuation marks)
+- Example of correct file: [onegin_example.txt](./onegin_example.txt)
 
 
 #### Abbreviations in tooltips and code:
@@ -48,5 +49,6 @@ tmp = temporary
 el  = element
 str = string
 ptr = pointer
+cnt = counter
 </pre>
  
