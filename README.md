@@ -37,6 +37,11 @@ onegin.exe test.txt
 *The name of the file to be read can be specified as the first command line argument*
 
 
+## Text file format
+- The file must not contain empty lines (exept the final one)
+- All characters must be contained in the ASCII table (Latin letters, numbers and punctuation marks)
+
+
 #### Abbreviations in tooltips and code:
 <pre>
 el  = element
