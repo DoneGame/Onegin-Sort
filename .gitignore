@@ -9,4 +9,3 @@
 *.csv
 doxygen/
 **/.git-auto/
-!include/x.txt

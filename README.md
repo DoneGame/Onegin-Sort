@@ -31,7 +31,7 @@ onegin.exe
 or
 
 ```bash
-onegin.exe onegin_en.txt
+onegin.exe test.txt
 ```
 
 *The name of the file to be read can be specified as the first command line argument*

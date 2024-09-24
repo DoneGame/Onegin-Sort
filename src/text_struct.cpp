@@ -13,6 +13,8 @@ void create_text_from_file (struct Text_t *readed_text, const char file_name[]) 
     size_t symbols_readed = 0;
     char *text_array = read_file_to_buffer (file_name, readed_text, &symbols_readed);
 
+    printf ("Symbols read = %lu\n\n", symbols_readed);
+
     if (!text_array)
         return;
 
@@ -70,7 +72,9 @@ void fill_lines_array (struct Text_t *readed_text, const size_t symbols_readed) 
         }
     }
 
+
     struct Line_t *last_line_ptr = readed_text->lines_array + readed_text->num_lines - 1;
+
     assert (last_line_ptr->beginning);
     if (last_line_ptr->length == 0)
         last_line_ptr->length = (readed_text->buffer + symbols_readed - last_line_ptr->beginning) / sizeof(char);

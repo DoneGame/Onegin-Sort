@@ -8,7 +8,8 @@
 #include "output.h"
 #include "text_struct.h"
 
-const char default_text_filename[] = "onegin_en_example.txt";
+const char default_text_filename[] = "onegin_example.txt";
+const bool debug = false;
 
 
 int main (const int argc, const char *argv[]) {
@@ -26,12 +27,17 @@ int main (const int argc, const char *argv[]) {
 
     if (!original_text.num_lines)
         return 1;
-
-    printf ("\nOriginal array of lines before sorting:\n");
-    print_lines_array (original_text.lines_array, original_text.num_lines);
+    
+    if (debug) {
+        printf ("\nOriginal array of lines before sorting:\n");
+        print_lines_array (original_text.lines_array, original_text.num_lines);
+    }
+    else {
+        printf ("\n");
+    }
 
     printf ("Original text:\n");
-    print_text (original_text, true, false);
+    print_text (original_text, true, debug);
 
 
     struct Text_t bubble_sorted_text = {.lines_array = NULL, .num_lines = original_text.num_lines, 
@@ -42,18 +48,25 @@ int main (const int argc, const char *argv[]) {
 
     if (!bubble_sorted_text.num_lines)
         return 1;
-
-    printf ("Unsorted array of lines:\n");
-    print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
+    
+    if (debug) {
+        printf ("Unsorted array of lines:\n");
+        print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
+    }
 
     printf ("# Bubble sorting text...\n");
     bubble_sort (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines, sizeof(struct Line_t), my_strcmp);
 
-    printf ("\nBubble sorted array of lines:\n");
-    print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
+    if (debug) {
+        printf ("\nBubble sorted array of lines:\n");
+        print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
+    }
+    else {
+        printf ("\n");
+    }
 
     printf ("Bubble sorted text:\n");
-    print_text (bubble_sorted_text, false, false);
+    print_text (bubble_sorted_text, false, debug);
 
 
     struct Text_t quick_sorted_text = {.lines_array = NULL, .num_lines = original_text.num_lines, 
@@ -68,25 +81,35 @@ int main (const int argc, const char *argv[]) {
     printf ("# Quick sorting text...\n");
     qsort (quick_sorted_text.lines_array, quick_sorted_text.num_lines, sizeof(struct Line_t), my_strcmp);
 
-    printf ("\nQuick sorted array of lines:\n");
-    print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
+    if (debug) {
+        printf ("\nQuick sorted array of lines:\n");
+        print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
+    }
+    else {
+        printf ("\n");
+    }
 
     printf ("Quick sorted text:\n");
-    print_text (quick_sorted_text, true, false);
+    print_text (quick_sorted_text, true, debug);
 
 
     printf ("\n# Sorting text by ends of lines...\n");
     qsort (quick_sorted_text.lines_array, quick_sorted_text.num_lines, sizeof(struct Line_t), my_inverse_strcmp);
 
-    printf ("\nArray of lines sorted by their ends:\n");
-    print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
+    if (debug) {
+        printf ("\nArray of lines sorted by their ends:\n");
+        print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
+    }
+    else {
+        printf ("\n");
+    }
 
     printf ("Sorted by line ends text:\n");
-    print_text (quick_sorted_text, true, false);
+    print_text (quick_sorted_text, true, debug);
 
 
-    printf ("\nOriginal text:\n");
-    print_text (original_text, true, false);
+    //printf ("\nOriginal text:\n");
+    //print_text (original_text, true, debug);
 
 
     destroy_text (&original_text);

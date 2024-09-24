@@ -43,7 +43,13 @@ char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, s
 
     *symbols_readed = fread (text_array, 1, file_size, file_with_text);
 
-    printf ("Beginning of text array = %lu\n\n", (unsigned long) text_array);
+    if (*symbols_readed == 0 || *symbols_readed >= readed_text->buffer_size / sizeof(char))
+        return NULL;
+
+    char *end_ptr = text_array + *symbols_readed;
+    *end_ptr = '\0';
+
+    printf ("Beginning of text array = %lu\n", (unsigned long) text_array);
 
     fclose(file_with_text);
 
