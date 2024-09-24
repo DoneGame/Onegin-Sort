@@ -11,32 +11,33 @@
 void bubble_sort (void *data, size_t size, size_t el_size, compare_func_t compare_func) {
     assert (data);
     assert (size);
+    assert (el_size);
 
     char *data_ = (char *) data;
+    char *tmp_pointer = (char *) calloc (1, el_size);
 
     for (size_t i = size; i > 0; i--) {
         for (size_t j = 0; j < i - 1; j++) {
             assert (j + 1 < size);
 
             if (compare_func (data_ + j*el_size, data_ + (j + 1)*el_size) > 0) {
-                swap (data_ + j*el_size, data_ + (j + 1)*el_size, el_size);
+                swap (data_ + j*el_size, data_ + (j + 1)*el_size, tmp_pointer, el_size);
             }
         }
     }
+
+    free (tmp_pointer); tmp_pointer = NULL;
 }
 
-void swap (char *first_el_pointer, char *second_el_pointer, size_t el_size) {
-    uint64_t tmp = 0;
-    char *tmp_pointer = (char *) &tmp;
+void swap (char *first_el_pointer, char *second_el_pointer, char *tmp_pointer, size_t el_size) {
+    assert (first_el_pointer);
+    assert (second_el_pointer);
+    assert (tmp_pointer);
 
-    byte_by_byte_copy (first_el_pointer,  tmp_pointer,       el_size);
-    byte_by_byte_copy (second_el_pointer, first_el_pointer,  el_size);
-    byte_by_byte_copy (tmp_pointer,       second_el_pointer, el_size);
-}
-
-void byte_by_byte_copy (char *from_ptr, char *to_ptr, size_t el_size) {
-    for (size_t byte_shift = 0; byte_shift < el_size; byte_shift++)
-        *(to_ptr + byte_shift) = *(from_ptr + byte_shift);
+    //      to                 from
+    memcpy (tmp_pointer,       first_el_pointer,  el_size);
+    memcpy (first_el_pointer,  second_el_pointer, el_size);
+    memcpy (second_el_pointer, tmp_pointer,       el_size);
 }
 
 int my_strcmp (const void *string1, const void *string2) {

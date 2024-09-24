@@ -44,6 +44,7 @@ onegin.exe test.txt
 
 #### Abbreviations in tooltips and code:
 <pre>
+tmp = temporary
 el  = element
 str = string
 ptr = pointer
