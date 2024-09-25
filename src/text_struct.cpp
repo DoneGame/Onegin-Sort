@@ -151,8 +151,6 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original, bo
             }
         }
 
-        // printf ("Line_len = %lu\n",  len);
-
         printf (" ");
 
         for (size_t j = 0; j < (size_t) (floor(log10(text.num_lines - 1)) + 1 - strlen(str_no)); j++) {

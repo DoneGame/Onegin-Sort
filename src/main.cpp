@@ -8,7 +8,7 @@
 #include "output.h"
 #include "text_struct.h"
 
-const char default_text_filename[] = "onegin_example.txt";
+const char default_text_filename[] = "examples/onegin_example.txt";
 const bool debug = false;
 
 

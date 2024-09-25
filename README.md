@@ -4,6 +4,7 @@
 
 ## Dependencies
 
+- `Windows or Linux`
 - `GCC`
 - `Make`
 
