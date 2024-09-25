@@ -23,7 +23,7 @@ void create_text_from_file (struct Text_t *readed_text, const char file_name[]) 
     printf ("Calculating number of lines\n");
     size_t n_lines = count_lines (text_array, symbols_readed);
 
-    printf ("Number of lines = %d\n\n", n_lines);
+    printf ("Number of lines = %lu\n\n", n_lines);
 
     readed_text->num_lines = n_lines;
 
@@ -62,7 +62,7 @@ void fill_lines_array (struct Text_t *readed_text, const size_t symbols_readed) 
     for (char *symbol_pointer = readed_text->buffer; (symbol_pointer = strchr(symbol_pointer, '\n')) != NULL; ) {
         printf ("new line = %lu\n", (unsigned long) symbol_pointer);
 
-        assert (symbol_pointer > NULL && symbol_pointer < readed_text->buffer + readed_text->buffer_size / sizeof(char));
+        assert (symbol_pointer > (char *) NULL && symbol_pointer < readed_text->buffer + readed_text->buffer_size / sizeof(char));
 
         *symbol_pointer = '\0';
         lines_array_pointer->length = (symbol_pointer - lines_array_pointer->beginning) / sizeof(char);
@@ -100,7 +100,7 @@ void print_text (const struct Text_t text, bool show_original, bool debug) {
 
     for (size_t i = 0; i < text.num_lines; i++) {
         char str_no[11] = ""; // 10 - maximum length of unsigned int in base 10
-        itoa (i, str_no, 10);
+        sprintf(str_no, "%lu", i);
 
         assert (i < text.num_lines);
         assert (text.lines_array[i].beginning);
@@ -136,7 +136,7 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original, bo
 
     for (size_t i = 0; i < text.num_lines; i++) {
         char str_no[11] = ""; // 10 - maximum length of unsigned int in base 10
-        itoa (i, str_no, 10);
+        sprintf(str_no, "%lu", i);
 
         assert (i < text.num_lines);
         assert (text.lines_array[i].beginning);
@@ -151,9 +151,11 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original, bo
             }
         }
 
+        // printf ("Line_len = %lu\n",  len);
+
         printf (" ");
 
-        for (size_t j = 0; j < floor(log10(text.num_lines - 1)) + 1 - strlen(str_no); j++) {
+        for (size_t j = 0; j < (size_t) (floor(log10(text.num_lines - 1)) + 1 - strlen(str_no)); j++) {
             printf (" ");
         }
 
@@ -169,7 +171,7 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original, bo
 }
 
 void destroy_text (struct Text_t *text_to_destroy) {
-    free (text_to_destroy->buffer);      text_to_destroy->buffer      = NULL;
+    text_to_destroy->buffer = NULL;
     free (text_to_destroy->lines_array); text_to_destroy->lines_array = NULL;
     text_to_destroy->num_lines   = 0;
     text_to_destroy->buffer_size = 0;

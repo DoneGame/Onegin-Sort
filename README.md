@@ -9,29 +9,36 @@
 
 ## Run program
 
-Clone the project
+### Clone the project
 
 ```bash
 git clone https://github.com/DoneGame/Onegin-Sort.git
 cd Onegin-Sort
 ```
 
-Compile code
+### Compile code
 
+For Windows
 ```bash
 make
 ```
 
-Finally, run executable file
+For Linux 
+```bash
+make -f Makefile_linux
+```
+
+
+### Finally, run executable file
 
 ```bash
-onegin.exe
+./onegin
 ```
 
 or
 
 ```bash
-onegin.exe test.txt
+./onegin test.txt
 ```
 
 *The name of the file to be read can be specified as the first command line argument*

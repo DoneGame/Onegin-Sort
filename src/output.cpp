@@ -46,7 +46,7 @@ void print_lines_array (const struct Line_t *lines_array, const size_t n_lines) 
     for (size_t i = 0; i < n_lines; i++) {
         assert (i < n_lines);
 
-        printf ("Str %d = %lu, len = %lu\n", i, (unsigned long) lines_array[i].beginning, (unsigned long) lines_array[i].length);
+        printf ("Str %lu = %lu, len = %lu\n", i, (unsigned long) lines_array[i].beginning, (unsigned long) lines_array[i].length);
     }
     printf ("\n");
 }

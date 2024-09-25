@@ -28,7 +28,7 @@ char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, s
         return NULL;
     }
 
-    printf ("Text file size = %d bytes\n\n", file_size);
+    printf ("Text file size = %lu bytes\n\n", file_size);
 
     readed_text->buffer_size = file_size + 1 * sizeof(char);
 
@@ -75,7 +75,7 @@ size_t count_lines (char *text_array, const size_t symbols_readed) {
 size_t get_file_size (const FILE *file) {
     assert (file);
 
-    int file_desc = fileno(file);
+    int file_desc = fileno((FILE *) file);
 
     printf ("File descriptor = %d\n", file_desc);
 

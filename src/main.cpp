@@ -65,7 +65,7 @@ int main (const int argc, const char *argv[]) {
         printf ("\n");
     }
 
-    printf ("Bubble sorted text:\n");
+    printf ("Bubble sorted text (only letters):\n");
     print_text (bubble_sorted_text, false, debug);
 
 
@@ -112,6 +112,7 @@ int main (const int argc, const char *argv[]) {
     //print_text (original_text, true, debug);
 
 
+    free (original_text.buffer); original_text.buffer = NULL;
     destroy_text (&original_text);
     destroy_text (&bubble_sorted_text);
     destroy_text (&quick_sorted_text);
