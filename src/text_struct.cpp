@@ -15,22 +15,28 @@ void create_text_from_file (struct Text_t *readed_text, const char file_name[]) 
     size_t symbols_readed = 0;
     char *text_array = read_file_to_buffer (file_name, readed_text, &symbols_readed);
 
-    printf ("Symbols read = %lu\n\n", symbols_readed);
-
     if (!text_array)
         return;
 
-    printf ("Calculating number of lines\n");
+    printf ("Symbols read = %lu\n", (unsigned long) symbols_readed);
+
+    #ifndef NDEBUG
+    printf ("\nCalculating number of lines\n");
+    #endif //NDEBUG
     size_t n_lines = count_lines (text_array, symbols_readed);
 
-    printf ("Number of lines = %lu\n\n", n_lines);
+    printf ("Number of lines in file = %lu\n\n", (unsigned long) n_lines);
 
     readed_text->num_lines = n_lines;
 
+    #ifndef NDEBUG
     printf ("Creating lines array\n");
+    #endif //NDEBUG
     create_lines_array (readed_text);
 
+    #ifndef NDEBUG
     printf ("Filling lines array\n");
+    #endif //NDEBUG
     fill_lines_array (readed_text, symbols_readed);
 }
 
@@ -46,7 +52,9 @@ void create_lines_array (struct Text_t *readed_text) {
         return;
     }
 
-    printf ("Line array = %lu\n\n", (unsigned long) lines_array);
+    #ifndef NDEBUG
+    printf ("Lines array = %lu\n\n", (unsigned long) lines_array);
+    #endif //NDEBUG
 
     readed_text->lines_array = lines_array;
 }
@@ -60,7 +68,9 @@ void fill_lines_array (struct Text_t *readed_text, const size_t symbols_readed) 
     lines_array_pointer[0].length = 0;
 
     for (char *symbol_pointer = readed_text->buffer; (symbol_pointer = strchr(symbol_pointer, '\n')) != NULL; ) {
+        #ifndef NDEBUG
         printf ("new line = %lu\n", (unsigned long) symbol_pointer);
+        #endif //NDEBUG
 
         assert (symbol_pointer > (char *) NULL && symbol_pointer < readed_text->buffer + readed_text->buffer_size / sizeof(char));
 
@@ -94,22 +104,22 @@ void copy_lines_array (const struct Text_t from_text, struct Text_t *to_text) {
         to_text->lines_array[i] = from_text.lines_array[i];
 }
 
-void print_text (const struct Text_t text, bool show_original, bool debug) {
+void print_text (const struct Text_t text, bool show_original) {
     assert (text.num_lines != 0);
     assert (text.lines_array);
 
     for (size_t i = 0; i < text.num_lines; i++) {
         char str_no[11] = ""; // 10 - maximum length of unsigned int in base 10
-        sprintf(str_no, "%lu", i);
+        sprintf(str_no, "%lu", (unsigned long) i);
 
         assert (i < text.num_lines);
         assert (text.lines_array[i].beginning);
 
-        print_str (str_no, text.lines_array[i].beginning, show_original, debug);
+        print_str (str_no, text.lines_array[i].beginning, show_original);
     }
 }
 
-void print_inverse_sorted_text (const struct Text_t text, bool show_original, bool debug) {
+void print_inverse_sorted_text (const struct Text_t text, bool show_original) {
     assert (text.num_lines != 0);
     assert (text.lines_array);
 
@@ -136,7 +146,7 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original, bo
 
     for (size_t i = 0; i < text.num_lines; i++) {
         char str_no[11] = ""; // 10 - maximum length of unsigned int in base 10
-        sprintf(str_no, "%lu", i);
+        sprintf(str_no, "%lu", (unsigned long) i);
 
         assert (i < text.num_lines);
         assert (text.lines_array[i].beginning);
@@ -151,6 +161,10 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original, bo
             }
         }
 
+        #ifndef NDEBUG
+        printf ("Printable line length = %lu\n", (unsigned long) len);
+        #endif //NDEBUG
+
         printf (" ");
 
         for (size_t j = 0; j < (size_t) (floor(log10(text.num_lines - 1)) + 1 - strlen(str_no)); j++) {
@@ -158,13 +172,14 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original, bo
         }
 
         for (size_t j = 0; j < max_length - len; j++) {
-            if (debug)
+            #ifndef NDEBUG
                 printf ("       ");
-            else
+            #else
                 printf (" ");
+            #endif //NDEBUG
         }
 
-        print_str (str_no, text.lines_array[i].beginning, show_original, debug);
+        print_str (str_no, text.lines_array[i].beginning, show_original);
     }
 }
 

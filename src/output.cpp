@@ -8,12 +8,14 @@
 #include "output.h"
 
 
-void print_str (const char str_name[], const char *string, bool show_original, bool debug) {
+void print_str (const char str_name[], const char *string, bool show_original) {
     assert (string);
 
-    printf ("%s = ", str_name);
+    #ifndef NDEBUG
+        printf ("%s = ", str_name);
+    #endif //NDEBUG
 
-    if (debug) {
+    #ifndef NDEBUG
         if (show_original) {
             for (size_t i = 0; i < strlen(string); i++)
                 printf ("%c(%3d) ", string[i], string[i]);
@@ -24,8 +26,7 @@ void print_str (const char str_name[], const char *string, bool show_original, b
                     printf ("%c(%3d) ", tolower(string[i]), tolower(string[i]));
             }
         }
-    }
-    else {
+    #else
         if (show_original) {
             printf ("%s", string);
         }
@@ -35,7 +36,7 @@ void print_str (const char str_name[], const char *string, bool show_original, b
                     printf ("%c", tolower(string[i]));
             }
         }
-    }
+    #endif //NDEBUG
 
     printf ("\n");
 }
@@ -46,7 +47,7 @@ void print_lines_array (const struct Line_t *lines_array, const size_t n_lines) 
     for (size_t i = 0; i < n_lines; i++) {
         assert (i < n_lines);
 
-        printf ("Str %lu = %lu, len = %lu\n", i, (unsigned long) lines_array[i].beginning, (unsigned long) lines_array[i].length);
+        printf ("Str %lu = %lu, len = %lu\n", (unsigned long) i, (unsigned long) lines_array[i].beginning, (unsigned long) lines_array[i].length);
     }
     printf ("\n");
 }

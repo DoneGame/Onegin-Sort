@@ -39,7 +39,7 @@ make -f Makefile_linux
 or
 
 ```bash
-./onegin test.txt
+./onegin examples/onegin_example.txt
 ```
 
 *The name of the file to be read can be specified as the first command line argument*
@@ -48,8 +48,18 @@ or
 ## Text file format
 - The file must not contain empty lines (exept the final one)
 - All characters must be contained in the ASCII table (Latin letters, numbers and punctuation marks)
-- Example of correct file: [onegin_example.txt](./onegin_example.txt)
+- Example of correct file: [onegin_example.txt](./examples/onegin_example.txt)
+- File [onegin_full.txt](./examples/onegin_full.txt) contains full text of Eugene Onegin in english with correct formatting
 
+## Debugging
+
+To get dubugging information in output use
+```bash
+make debug
+./onegin_debug examples/test.txt
+```
+
+File [test.txt](./examples/test.txt) contains small test for program
 
 #### Abbreviations in tooltips and code:
 <pre>
@@ -58,5 +68,6 @@ el  = element
 str = string
 ptr = pointer
 cnt = counter
+len = length
 </pre>
  

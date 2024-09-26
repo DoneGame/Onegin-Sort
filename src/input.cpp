@@ -28,14 +28,14 @@ char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, s
         return NULL;
     }
 
-    printf ("Text file size = %lu bytes\n\n", file_size);
+    printf ("Text file size = %lu bytes\n", (unsigned long) file_size);
 
     readed_text->buffer_size = file_size + 1 * sizeof(char);
 
     char *text_array = (char *) calloc (file_size / sizeof(char) + 1, sizeof(char));
 
     if (!text_array) {
-        printf ("Failed to allocate memory for text array!");
+        printf ("\nFailed to allocate memory for text array!");
         return NULL;
     }
 
@@ -49,7 +49,9 @@ char *read_file_to_buffer (const char file_name[], struct Text_t *readed_text, s
     char *end_ptr = text_array + *symbols_readed;
     *end_ptr = '\0';
 
+    #ifndef NDEBUG
     printf ("Beginning of text array = %lu\n", (unsigned long) text_array);
+    #endif //NDEBUG
 
     fclose(file_with_text);
 
@@ -62,7 +64,9 @@ size_t count_lines (char *text_array, const size_t symbols_readed) {
     size_t line_no = 0;
     char *current_symbol = text_array;
     for ( ; (current_symbol = strchr(current_symbol, '\n')) != NULL; current_symbol++) {
-        // printf ("new line = %lu\n", (unsigned long) current_symbol);
+        #ifndef NDEBUG
+        printf ("new line = %lu\n", (unsigned long) current_symbol);
+        #endif //NDEBUG
 
         if (current_symbol < text_array + symbols_readed)
             if (*(current_symbol + 1) != '\0')
@@ -77,7 +81,9 @@ size_t get_file_size (const FILE *file) {
 
     int file_desc = fileno((FILE *) file);
 
+    #ifndef NDEBUG
     printf ("File descriptor = %d\n", file_desc);
+    #endif //NDEBUG
 
     if (file_desc == -1)
         return 0;
