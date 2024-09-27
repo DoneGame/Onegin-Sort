@@ -40,14 +40,3 @@ void print_str (const char str_name[], const char *string, bool show_original) {
 
     printf ("\n");
 }
-
-void print_lines_array (const struct Line_t *lines_array, const size_t n_lines) {
-    assert (lines_array);
-
-    for (size_t i = 0; i < n_lines; i++) {
-        assert (i < n_lines);
-
-        printf ("Str %lu = %lu, len = %lu\n", (unsigned long) i, (unsigned long) lines_array[i].beginning, (unsigned long) lines_array[i].length);
-    }
-    printf ("\n");
-}

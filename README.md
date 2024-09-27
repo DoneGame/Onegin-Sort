@@ -69,5 +69,6 @@ str = string
 ptr = pointer
 cnt = counter
 len = length
+num = number
 </pre>
  

@@ -33,7 +33,7 @@ int main (const int argc, const char *argv[]) {
     
     #ifndef NDEBUG
         printf ("\nOriginal array of lines before sorting:\n");
-        print_lines_array (original_text.lines_array, original_text.num_lines);
+        print_lines_array (original_text);
     #endif //NDEBUG
 
     printf ("Original text:\n");
@@ -55,7 +55,7 @@ int main (const int argc, const char *argv[]) {
     
     #ifndef NDEBUG
         printf ("Unsorted array of lines:\n");
-        print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
+        print_lines_array (bubble_sorted_text);
     #endif //NDEBUG
 
     printf ("# Bubble sorting text...\n");
@@ -63,7 +63,7 @@ int main (const int argc, const char *argv[]) {
 
     #ifndef NDEBUG
         printf ("\nBubble sorted array of lines:\n");
-        print_lines_array (bubble_sorted_text.lines_array, bubble_sorted_text.num_lines);
+        print_lines_array (bubble_sorted_text);
     #else
         printf ("\n");
     #endif //NDEBUG
@@ -90,7 +90,7 @@ int main (const int argc, const char *argv[]) {
 
     #ifndef NDEBUG
         printf ("\nQuick sorted array of lines:\n");
-        print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
+        print_lines_array (quick_sorted_text);
     #else
         printf ("\n");
     #endif //NDEBUG
@@ -104,7 +104,7 @@ int main (const int argc, const char *argv[]) {
 
     #ifndef NDEBUG
         printf ("\nArray of lines sorted by their ends:\n");
-        print_lines_array (quick_sorted_text.lines_array, quick_sorted_text.num_lines);
+        print_lines_array (quick_sorted_text);
     #else
         printf ("\n");
     #endif //NDEBUG

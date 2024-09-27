@@ -23,6 +23,7 @@ void fill_lines_array          (struct Text_t *readed_text, const size_t symbols
 void copy_lines_array          (const struct Text_t from_text, struct Text_t *to_text);
 void print_text                (const struct Text_t text, bool show_original);
 void print_inverse_sorted_text (const struct Text_t text, bool show_original);
+void print_lines_array         (const struct Text_t text);
 void destroy_text              (struct Text_t *text_to_destroy);
 
 #endif //TEXT_STRUCT_H

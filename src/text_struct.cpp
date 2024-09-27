@@ -183,6 +183,17 @@ void print_inverse_sorted_text (const struct Text_t text, bool show_original) {
     }
 }
 
+void print_lines_array (const struct Text_t text) {
+    assert (text.lines_array);
+
+    for (size_t i = 0; i < text.num_lines; i++) {
+        assert (i < text.num_lines);
+
+        printf ("Str %lu = %lu, len = %lu\n", (unsigned long) i, (unsigned long) text.lines_array[i].beginning, (unsigned long) text.lines_array[i].length);
+    }
+    printf ("\n");
+}
+
 void destroy_text (struct Text_t *text_to_destroy) {
     text_to_destroy->buffer = NULL;
     free (text_to_destroy->lines_array); text_to_destroy->lines_array = NULL;
