@@ -19,16 +19,9 @@ cd Onegin-Sort
 
 ### Compile code
 
-For Windows
 ```bash
 make
 ```
-
-For Linux 
-```bash
-make -f Makefile_linux
-```
-
 
 ### Finally, run executable file
 
@@ -42,8 +35,7 @@ or
 ./onegin examples/onegin_example.txt
 ```
 
-*The name of the file to be read can be specified as the first command line argument*
-
+#### *Name of the file to be read can be specified as the first command line argument*
 
 ## Text file format
 - The file must not contain empty lines (exept the final one)
